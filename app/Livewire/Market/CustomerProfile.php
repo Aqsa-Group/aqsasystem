@@ -396,73 +396,74 @@ class CustomerProfile extends Component
         session()->flash('message', 'گزارش به‌روزرسانی شد.');
     }
 
-    // ==================== چاپ PDF ====================
     public function printReport()
-    {
-        try {
-            ini_set('memory_limit', '512M');
-            ini_set('max_execution_time', 300);
+{
+    try {
+        ini_set('memory_limit', '512M');
+        ini_set('max_execution_time', 300);
 
-            $reports = $this->reports;
-            $currencies = $this->currencies;
-            $transactions = $this->getAllTransactions();
-            $conversions = $this->getAllConversions(); // ★ اضافه شد
+        $reports = $this->reports;
+        $currencies = $this->currencies;
 
-            $filterInfo = [
-                'customer' => $this->filterCustomerId ? Customer::find($this->filterCustomerId)->fullname ?? 'همه' : 'همه',
-                'currency' => $this->filterCurrency ? ($this->currencies[$this->filterCurrency] ?? $this->filterCurrency) : 'همه',
-                'type' => $this->filterTransactionType === 'all' ? 'همه' : ($this->filterTransactionType === 'withdrawal' ? 'برداشت‌ها' : 'پرداخت‌های بیرونی'),
-                'startDate' => $this->startDate ?: 'نامحدود',
-                'endDate' => $this->endDate ?: 'نامحدود',
-            ];
+        // ★ همیشه یک Collection برگردانید، حتی اگر خالی باشد
+        $transactions = $this->getAllTransactions() ?? collect();
+        $conversions = $this->getAllConversions() ?? collect();
 
-            $mpdf = new \Mpdf\Mpdf([
-                'mode' => 'utf-8',
-                'format' => 'A4',
-                'directionality' => 'rtl',
-                'margin_top' => 15,
-                'margin_bottom' => 15,
-                'margin_left' => 10,
-                'margin_right' => 10,
-                'fontDir' => array_merge(
-                    (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
-                    [public_path('fonts/vazir/')]
-                ),
-                'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-                    'vazir' => [
-                        'R' => 'Vazir-Light.ttf',
-                        'B' => 'Vazir-Bold.ttf',
-                        'useOTL' => 0xFF,
-                        'useKashida' => 75,
-                    ],
+        $filterInfo = [
+            'customer' => $this->filterCustomerId ? Customer::find($this->filterCustomerId)->fullname ?? 'همه' : 'همه',
+            'currency' => $this->filterCurrency ? ($this->currencies[$this->filterCurrency] ?? $this->filterCurrency) : 'همه',
+            'type' => $this->filterTransactionType === 'all' ? 'همه' : ($this->filterTransactionType === 'withdrawal' ? 'برداشت‌ها' : 'پرداخت‌های بیرونی'),
+            'startDate' => $this->startDate ?: 'نامحدود',
+            'endDate' => $this->endDate ?: 'نامحدود',
+        ];
+
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'directionality' => 'rtl',
+            'margin_top' => 15,
+            'margin_bottom' => 15,
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'fontDir' => array_merge(
+                (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                [public_path('fonts/vazir/')]
+            ),
+            'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+                'vazir' => [
+                    'R' => 'Vazir-Light.ttf',
+                    'B' => 'Vazir-Bold.ttf',
+                    'useOTL' => 0xFF,
+                    'useKashida' => 75,
                 ],
-                'default_font' => 'vazir',
-                'tempDir' => storage_path('app/mpdf'),
-            ]);
+            ],
+            'default_font' => 'vazir',
+            'tempDir' => storage_path('app/mpdf'),
+        ]);
 
-            $mpdf->SetAutoPageBreak(true, 15);
+        $mpdf->SetAutoPageBreak(true, 15);
 
-            $html = view('print.customer-profile-pdf', compact(
-                'reports',
-                'currencies',
-                'transactions',
-                'conversions', // ★ اضافه شد
-                'filterInfo'
-            ))->render();
+        $html = view('print.customer-profile-pdf', compact(
+            'reports',
+            'currencies',
+            'transactions',
+            'conversions',
+            'filterInfo'
+        ))->render();
 
-            $mpdf->WriteHTML($html);
+        $mpdf->WriteHTML($html);
 
-            $fileName = 'گزارش_مشتریان_' . Jalalian::now()->format('Y_m_d_H_i') . '.pdf';
-            $path = storage_path('app/public/' . $fileName);
-            $mpdf->Output($path, 'F');
+        $fileName = 'گزارش_مشتریان_' . Jalalian::now()->format('Y_m_d_H_i') . '.pdf';
+        $path = storage_path('app/public/' . $fileName);
+        $mpdf->Output($path, 'F');
 
-            return redirect()->to(asset('storage/' . $fileName));
-        } catch (\Exception $e) {
-            Log::error('PDF generation error: ' . $e->getMessage());
-            session()->flash('error', 'خطا در ایجاد PDF: ' . $e->getMessage());
-            return redirect()->back();
-        }
+        return redirect()->to(asset('storage/' . $fileName));
+    } catch (\Exception $e) {
+        Log::error('PDF generation error: ' . $e->getMessage());
+        session()->flash('error', 'خطا در ایجاد PDF: ' . $e->getMessage());
+        return redirect()->back();
     }
+}
 
     // ==================== دریافت همه تراکنش‌ها (برای PDF) ====================
     public function getAllTransactions()

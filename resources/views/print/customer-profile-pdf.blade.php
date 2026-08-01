@@ -1,29 +1,27 @@
-{{-- resources/views/print/customer-profile-pdf.blade.php --}}
 @php
 if (!function_exists('getPersianCurrencyName')) {
-function getPersianCurrencyName($currencyCode) {
-$map = [
-'AFN' => 'افغانی',
-'USD' => 'دالر',
-'EUR' => 'یورو',
-'IRR' => 'تومان',
-'PKR' => 'کلدار',
-'AED' => 'درهم',
-'TRY' => 'لیره',
-'CNY' => 'یوان',
-'GBP' => 'پوند',
-'JPY' => 'ین',
-'SAR' => 'ریال سعودی',
-'INR' => 'روپیه',
-];
-return $map[$currencyCode] ?? $currencyCode;
-}
+    function getPersianCurrencyName($currencyCode) {
+        $map = [
+            'AFN' => 'افغانی',
+            'USD' => 'دالر',
+            'EUR' => 'یورو',
+            'IRR' => 'تومان',
+            'PKR' => 'کلدار',
+            'AED' => 'درهم',
+            'TRY' => 'لیره',
+            'CNY' => 'یوان',
+            'GBP' => 'پوند',
+            'JPY' => 'ین',
+            'SAR' => 'ریال سعودی',
+            'INR' => 'روپیه',
+        ];
+        return $map[$currencyCode] ?? $currencyCode;
+    }
 }
 @endphp
 
 <!DOCTYPE html>
 <html dir="rtl" lang="fa">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,26 +32,22 @@ return $map[$currencyCode] ?? $currencyCode;
             margin: 20px;
             color: #333;
         }
-
         .header {
             text-align: center;
             margin-bottom: 20px;
             border-bottom: 2px solid #184D6C;
             padding-bottom: 10px;
         }
-
         .header h1 {
             font-size: 24px;
             color: #184D6C;
             margin: 0;
         }
-
         .header .sub {
             font-size: 14px;
             color: #555;
             margin-top: 5px;
         }
-
         .filter-info {
             font-size: 12px;
             background: #f5f5f5;
@@ -62,61 +56,33 @@ return $map[$currencyCode] ?? $currencyCode;
             margin-bottom: 20px;
             direction: rtl;
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
             font-size: 12px;
         }
-
-        th,
-        td {
+        th, td {
             border: 1px solid #ccc;
             padding: 6px 8px;
             text-align: center;
         }
-
         th {
             background-color: #1e3c5c;
             color: #fff;
             font-weight: bold;
         }
-
         .sub-header {
             background-color: #34495e;
             color: #fff;
         }
-
-        .bg-white {
-            background-color: #fff;
-        }
-
-        .bg-gray {
-            background-color: #f9f9f9;
-        }
-
-        .text-red {
-            color: #d9534f;
-        }
-
-        .text-green {
-            color: #5cb85c;
-        }
-
-        .text-gray {
-            color: #888;
-        }
-
-        .font-mono {
-            font-family: 'Courier New', monospace;
-        }
-
-        .total-row {
-            background-color: #e9f7ef;
-            font-weight: bold;
-        }
-
+        .bg-white { background-color: #fff; }
+        .bg-gray { background-color: #f9f9f9; }
+        .text-red { color: #d9534f; }
+        .text-green { color: #5cb85c; }
+        .text-gray { color: #888; }
+        .font-mono { font-family: 'Courier New', monospace; }
+        .total-row { background-color: #e9f7ef; font-weight: bold; }
         .section-title {
             font-size: 16px;
             font-weight: bold;
@@ -125,7 +91,6 @@ return $map[$currencyCode] ?? $currencyCode;
             border-bottom: 1px solid #184D6C;
             padding-bottom: 5px;
         }
-
         .footer {
             text-align: center;
             font-size: 11px;
@@ -134,13 +99,9 @@ return $map[$currencyCode] ?? $currencyCode;
             border-top: 1px solid #ddd;
             padding-top: 10px;
         }
-
-        @page {
-            margin: 20px;
-        }
+        @page { margin: 20px; }
     </style>
 </head>
-
 <body>
 
     <div class="header">
@@ -150,8 +111,7 @@ return $map[$currencyCode] ?? $currencyCode;
 
     <div class="filter-info">
         <strong>فیلترهای اعمال‌شده:</strong><br>
-        مشتری: {{ $filterInfo['customer'] }} | ارز: {{ $filterInfo['currency'] }} | نوع تراکنش: {{ $filterInfo['type']
-        }}<br>
+        مشتری: {{ $filterInfo['customer'] }} | ارز: {{ $filterInfo['currency'] }} | نوع تراکنش: {{ $filterInfo['type'] }}<br>
         از تاریخ: {{ $filterInfo['startDate'] }} | تا تاریخ: {{ $filterInfo['endDate'] }}
     </div>
 
@@ -178,12 +138,12 @@ return $map[$currencyCode] ?? $currencyCode;
                 @foreach($currencies as $code => $name)
                 @php
                 $bal = $report['balance_' . strtolower($code)] ?? 0;
-                $class = $bal < 0 ? 'text-red' : ($bal> 0 ? 'text-green' : 'text-gray');
-                    @endphp
-                    <td class="font-mono {{ $class }}">{{ number_format($bal, 2) }}</td>
-                    @endforeach
-                    <td class="font-mono">{{ number_format($report['rent_money'], 2) }}</td>
-                    <td class="font-mono font-bold">{{ number_format($report['total_balance'], 2) }}</td>
+                $class = $bal < 0 ? 'text-red' : ($bal > 0 ? 'text-green' : 'text-gray');
+                @endphp
+                <td class="font-mono {{ $class }}">{{ number_format($bal, 2) }}</td>
+                @endforeach
+                <td class="font-mono">{{ number_format($report['rent_money'], 2) }}</td>
+                <td class="font-mono font-bold">{{ number_format($report['total_balance'], 2) }}</td>
             </tr>
             @empty
             <tr>
@@ -209,12 +169,14 @@ return $map[$currencyCode] ?? $currencyCode;
             </tr>
         </thead>
         <tbody>
-            @forelse($transactions as $index => $tx)
+            @forelse($transactions ?? [] as $index => $tx)
             @php
             $rowClass = $index % 2 == 0 ? 'bg-white' : 'bg-gray';
             $isOutside = $tx['transaction_type'] === 'outside';
             $typeClass = $isOutside ? 'text-green' : 'text-blue';
-            $amountClass = $tx['amount'] < 0 ? 'text-red' : 'text-green' ; @endphp <tr class="{{ $rowClass }}">
+            $amountClass = $tx['amount'] < 0 ? 'text-red' : 'text-green';
+            @endphp
+            <tr class="{{ $rowClass }}">
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $tx['customer_name'] }}</td>
                 <td>
@@ -224,23 +186,61 @@ return $map[$currencyCode] ?? $currencyCode;
                     عواید بیرونی
                     @endif
                 </td>
-                <td><span style="font-weight:bold;color:{{ $isOutside ? '#2e7d32' : '#1565c0' }}">{{ $tx['type']
-                        }}</span></td>
+                <td><span style="font-weight:bold;color:{{ $isOutside ? '#2e7d32' : '#1565c0' }}">{{ $tx['type'] }}</span></td>
                 <td class="font-mono {{ $amountClass }}">{{ number_format($tx['amount'], 2) }}</td>
                 <td>{{ getPersianCurrencyName($tx['currency']) }}</td>
                 <td>{{ $tx['date_fa'] }}</td>
                 <td>{{ $tx['description'] }}</td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="7">هیچ تراکنشی یافت نشد</td>
-                </tr>
-                @endforelse
+            </tr>
+            @empty
+            <tr>
+                <td colspan="8">هیچ تراکنشی یافت نشد</td>
+            </tr>
+            @endforelse
         </tbody>
     </table>
 
+    <!-- ★ جدید: جدول تبدیل ارزها -->
+    <div class="section-title">لیست تبدیل‌های ارز</div>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>مشتری</th>
+                <th>از ارز</th>
+                <th>به ارز</th>
+                <th>مبلغ برداشت</th>
+                <th>مبلغ دریافت</th>
+                <th>نرخ</th>
+                <th>تاریخ</th>
+                <th>توضیحات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($conversions ?? [] as $index => $conv)
+            @php $rowClass = $index % 2 == 0 ? 'bg-white' : 'bg-gray'; @endphp
+            <tr class="{{ $rowClass }}">
+                <td>{{ $index + 1 }}</td>
+                <td>{{ $conv->customer ? $conv->customer->fullname : 'نامشخص' }}</td>
+                <td>{{ getPersianCurrencyName($conv->from_currency) }}</td>
+                <td>{{ getPersianCurrencyName($conv->to_currency) }}</td>
+                <td class="font-mono">{{ number_format($conv->withdraw_amount, 2) }}</td>
+                <td class="font-mono">{{ number_format($conv->receive_amount, 2) }}</td>
+                <td class="font-mono">{{ number_format($conv->rate, 4) }}</td>
+                <td>{{ $conv->transaction_date ?: \Morilog\Jalali\Jalalian::fromCarbon($conv->created_at)->format('Y/m/d') }}</td>
+                <td>{{ $conv->description ?? '-' }}</td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="9">هیچ تبدیل ارزی یافت نشد</td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
 
+    <div class="footer">
+        این گزارش توسط سیستم مدیریت مشتریان تولید شده است.
+    </div>
 
 </body>
-
 </html>
