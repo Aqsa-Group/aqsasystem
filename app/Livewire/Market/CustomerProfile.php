@@ -466,11 +466,107 @@ class CustomerProfile extends Component
 }
 
     // ==================== دریافت همه تراکنش‌ها (برای PDF) ====================
-    public function getAllTransactions()
-    {
-        // همان کد قبلی (بدون تغییر)...
-        // (برای اختصار حذف شده، ولی در فایل اصلی همان است)
+   public function getAllTransactions()
+{
+    $adminId = $this->getAdminId();
+
+    // تبدیل تاریخ‌های شمسی
+    $startDateCarbon = null;
+    $endDateCarbon = null;
+    if (!empty($this->startDate)) {
+        try {
+            $dateString = str_replace('-', '/', $this->startDate);
+            $startDateCarbon = Jalalian::fromFormat('Y/m/d', $dateString)->toCarbon()->startOfDay();
+        } catch (\Exception $e) {}
     }
+    if (!empty($this->endDate)) {
+        try {
+            $dateString = str_replace('-', '/', $this->endDate);
+            $endDateCarbon = Jalalian::fromFormat('Y/m/d', $dateString)->toCarbon()->endOfDay();
+        } catch (\Exception $e) {}
+    }
+
+    // ====== برداشت‌ها ======
+    $withdrawQuery = WithdrawLog::with('customer')
+        ->where('admin_id', $adminId)
+        ->whereNotNull('customer_id');
+
+    if (!empty($this->search)) {
+        $withdrawQuery->whereHas('customer', function ($q) {
+            $q->where('fullname', 'like', '%' . $this->search . '%');
+        });
+    }
+    if (!empty($this->filterCustomerId)) {
+        $withdrawQuery->where('customer_id', $this->filterCustomerId);
+    }
+    if ($startDateCarbon) {
+        $withdrawQuery->where('created_at', '>=', $startDateCarbon);
+    }
+    if ($endDateCarbon) {
+        $withdrawQuery->where('created_at', '<=', $endDateCarbon);
+    }
+    if (!empty($this->filterCurrency)) {
+        $withdrawQuery->where('currency', $this->filterCurrency);
+    }
+
+    // اگر فیلتر نوع تراکنش روی 'outside' باشد، برداشت‌ها را نگیریم
+    $withdrawals = ($this->filterTransactionType === 'outside') 
+        ? collect() 
+        : $withdrawQuery->get()->map(function ($item) {
+            return [
+                'type' => $item->expanses_type ?? 'برداشت',
+                'customer_name' => $item->customer ? $item->customer->fullname : 'نامشخص',
+                'amount' => $item->amount,
+                'currency' => $item->currency,
+                'description' => $item->description ?? '-',
+                'created_at' => $item->created_at,
+                'date_fa' => Jalalian::fromCarbon($item->created_at)->format('Y/m/d H:i'),
+                'transaction_type' => 'withdrawal',
+            ];
+        });
+
+    // ====== پرداخت‌های بیرونی ======
+    $outsideQuery = Outside::with('customer')
+        ->where('admin_id', $adminId)
+        ->whereNotNull('customer_id');
+
+    if (!empty($this->search)) {
+        $outsideQuery->whereHas('customer', function ($q) {
+            $q->where('fullname', 'like', '%' . $this->search . '%');
+        });
+    }
+    if (!empty($this->filterCustomerId)) {
+        $outsideQuery->where('customer_id', $this->filterCustomerId);
+    }
+    if ($startDateCarbon) {
+        $outsideQuery->where('created_at', '>=', $startDateCarbon);
+    }
+    if ($endDateCarbon) {
+        $outsideQuery->where('created_at', '<=', $endDateCarbon);
+    }
+    if (!empty($this->filterCurrency)) {
+        $outsideQuery->where('currency', $this->filterCurrency);
+    }
+
+    $outsides = ($this->filterTransactionType === 'withdrawal') 
+        ? collect() 
+        : $outsideQuery->get()->map(function ($item) {
+            return [
+                'type' => $item->type ?? 'پرداخت بیرونی',
+                'customer_name' => $item->customer ? $item->customer->fullname : 'نامشخص',
+                'amount' => $item->paid,
+                'currency' => $item->currency,
+                'description' => $item->description ?? '-',
+                'created_at' => $item->created_at,
+                'date_fa' => Jalalian::fromCarbon($item->created_at)->format('Y/m/d H:i'),
+                'transaction_type' => 'outside',
+            ];
+        });
+
+    // ادغام و مرتب‌سازی نزولی
+    $all = $withdrawals->concat($outsides);
+    return $all->sortByDesc('created_at')->values();
+}
 
     // ==================== رندر ====================
     public function render()
