@@ -407,8 +407,6 @@ class WarehouseResource extends Resource
         if (Auth::user()?->role !== 'superadmin') {
             $query->where('user_id', Auth::id());
         }
-
-        return $query->orderByRaw('CASE WHEN all_exist_number = 0 THEN 1 ELSE 0 END')
-            ->orderByDesc('all_exist_number');
+return $query->orderBy('barcode', 'asc');
     }
 }

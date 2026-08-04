@@ -122,13 +122,15 @@ class CustomerProfile extends Component
             try {
                 $dateString = str_replace('-', '/', $this->startDate);
                 $startDateCarbon = Jalalian::fromFormat('Y/m/d', $dateString)->toCarbon()->startOfDay();
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
         }
         if (!empty($this->endDate)) {
             try {
                 $dateString = str_replace('-', '/', $this->endDate);
                 $endDateCarbon = Jalalian::fromFormat('Y/m/d', $dateString)->toCarbon()->endOfDay();
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
         }
 
         // ====== برداشت‌ها ======
@@ -238,13 +240,15 @@ class CustomerProfile extends Component
             try {
                 $dateString = str_replace('-', '/', $this->startDate);
                 $startDateCarbon = Jalalian::fromFormat('Y/m/d', $dateString)->toCarbon()->startOfDay();
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
         }
         if (!empty($this->endDate)) {
             try {
                 $dateString = str_replace('-', '/', $this->endDate);
                 $endDateCarbon = Jalalian::fromFormat('Y/m/d', $dateString)->toCarbon()->endOfDay();
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
         }
 
         $query = CustomerConversion::with('customer')
@@ -274,7 +278,7 @@ class CustomerProfile extends Component
         if (!empty($this->filterCurrency)) {
             $query->where(function ($q) {
                 $q->where('from_currency', $this->filterCurrency)
-                  ->orWhere('to_currency', $this->filterCurrency);
+                    ->orWhere('to_currency', $this->filterCurrency);
             });
         }
 
@@ -297,13 +301,15 @@ class CustomerProfile extends Component
             try {
                 $dateString = str_replace('-', '/', $this->startDate);
                 $startDateCarbon = Jalalian::fromFormat('Y/m/d', $dateString)->toCarbon()->startOfDay();
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
         }
         if (!empty($this->endDate)) {
             try {
                 $dateString = str_replace('-', '/', $this->endDate);
                 $endDateCarbon = Jalalian::fromFormat('Y/m/d', $dateString)->toCarbon()->endOfDay();
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
         }
 
         $query = CustomerConversion::with('customer')
@@ -326,7 +332,7 @@ class CustomerProfile extends Component
         if (!empty($this->filterCurrency)) {
             $query->where(function ($q) {
                 $q->where('from_currency', $this->filterCurrency)
-                  ->orWhere('to_currency', $this->filterCurrency);
+                    ->orWhere('to_currency', $this->filterCurrency);
             });
         }
 
@@ -397,176 +403,178 @@ class CustomerProfile extends Component
     }
 
     public function printReport()
-{
-    try {
-        ini_set('memory_limit', '512M');
-        ini_set('max_execution_time', 300);
+    {
+        try {
+            ini_set('memory_limit', '512M');
+            ini_set('max_execution_time', 300);
 
-        $reports = $this->reports;
-        $currencies = $this->currencies;
+            $reports = $this->reports;
+            $currencies = $this->currencies;
 
-        // ★ همیشه یک Collection برگردانید، حتی اگر خالی باشد
-        $transactions = $this->getAllTransactions() ?? collect();
-        $conversions = $this->getAllConversions() ?? collect();
+            // ★ همیشه یک Collection برگردانید، حتی اگر خالی باشد
+            $transactions = $this->getAllTransactions() ?? collect();
+            $conversions = $this->getAllConversions() ?? collect();
 
-        $filterInfo = [
-            'customer' => $this->filterCustomerId ? Customer::find($this->filterCustomerId)->fullname ?? 'همه' : 'همه',
-            'currency' => $this->filterCurrency ? ($this->currencies[$this->filterCurrency] ?? $this->filterCurrency) : 'همه',
-            'type' => $this->filterTransactionType === 'all' ? 'همه' : ($this->filterTransactionType === 'withdrawal' ? 'برداشت‌ها' : 'پرداخت‌های بیرونی'),
-            'startDate' => $this->startDate ?: 'نامحدود',
-            'endDate' => $this->endDate ?: 'نامحدود',
-        ];
+            $filterInfo = [
+                'customer' => $this->filterCustomerId ? Customer::find($this->filterCustomerId)->fullname ?? 'همه' : 'همه',
+                'currency' => $this->filterCurrency ? ($this->currencies[$this->filterCurrency] ?? $this->filterCurrency) : 'همه',
+                'type' => $this->filterTransactionType === 'all' ? 'همه' : ($this->filterTransactionType === 'withdrawal' ? 'برداشت‌ها' : 'پرداخت‌های بیرونی'),
+                'startDate' => $this->startDate ?: 'نامحدود',
+                'endDate' => $this->endDate ?: 'نامحدود',
+            ];
 
-        $mpdf = new \Mpdf\Mpdf([
-            'mode' => 'utf-8',
-            'format' => 'A4',
-            'directionality' => 'rtl',
-            'margin_top' => 15,
-            'margin_bottom' => 15,
-            'margin_left' => 10,
-            'margin_right' => 10,
-            'fontDir' => array_merge(
-                (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
-                [public_path('fonts/vazir/')]
-            ),
-            'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-                'vazir' => [
-                    'R' => 'Vazir-Light.ttf',
-                    'B' => 'Vazir-Bold.ttf',
-                    'useOTL' => 0xFF,
-                    'useKashida' => 75,
+            $mpdf = new \Mpdf\Mpdf([
+                'mode' => 'utf-8',
+                'format' => 'A4',
+                'directionality' => 'rtl',
+                'margin_top' => 15,
+                'margin_bottom' => 15,
+                'margin_left' => 10,
+                'margin_right' => 10,
+                'fontDir' => array_merge(
+                    (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                    [public_path('fonts/vazir/')]
+                ),
+                'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+                    'vazir' => [
+                        'R' => 'Vazir-Light.ttf',
+                        'B' => 'Vazir-Bold.ttf',
+                        'useOTL' => 0xFF,
+                        'useKashida' => 75,
+                    ],
                 ],
-            ],
-            'default_font' => 'vazir',
-            'tempDir' => storage_path('app/mpdf'),
-        ]);
+                'default_font' => 'vazir',
+                'tempDir' => storage_path('app/mpdf'),
+            ]);
 
-        $mpdf->SetAutoPageBreak(true, 15);
+            $mpdf->SetAutoPageBreak(true, 15);
 
-        $html = view('print.customer-profile-pdf', compact(
-            'reports',
-            'currencies',
-            'transactions',
-            'conversions',
-            'filterInfo'
-        ))->render();
+            $html = view('print.customer-profile-pdf', compact(
+                'reports',
+                'currencies',
+                'transactions',
+                'conversions',
+                'filterInfo'
+            ))->render();
 
-        $mpdf->WriteHTML($html);
+            $mpdf->WriteHTML($html);
 
-        $fileName = 'گزارش_مشتریان_' . Jalalian::now()->format('Y_m_d_H_i') . '.pdf';
-        $path = storage_path('app/public/' . $fileName);
-        $mpdf->Output($path, 'F');
+            $fileName = 'گزارش_مشتریان_' . Jalalian::now()->format('Y_m_d_H_i') . '.pdf';
+            $path = storage_path('app/public/' . $fileName);
+            $mpdf->Output($path, 'F');
 
-        return redirect()->to(asset('storage/' . $fileName));
-    } catch (\Exception $e) {
-        Log::error('PDF generation error: ' . $e->getMessage());
-        session()->flash('error', 'خطا در ایجاد PDF: ' . $e->getMessage());
-        return redirect()->back();
+            return redirect()->to(asset('storage/' . $fileName));
+        } catch (\Exception $e) {
+            Log::error('PDF generation error: ' . $e->getMessage());
+            session()->flash('error', 'خطا در ایجاد PDF: ' . $e->getMessage());
+            return redirect()->back();
+        }
     }
-}
 
     // ==================== دریافت همه تراکنش‌ها (برای PDF) ====================
-   public function getAllTransactions()
-{
-    $adminId = $this->getAdminId();
+    public function getAllTransactions()
+    {
+        $adminId = $this->getAdminId();
 
-    // تبدیل تاریخ‌های شمسی
-    $startDateCarbon = null;
-    $endDateCarbon = null;
-    if (!empty($this->startDate)) {
-        try {
-            $dateString = str_replace('-', '/', $this->startDate);
-            $startDateCarbon = Jalalian::fromFormat('Y/m/d', $dateString)->toCarbon()->startOfDay();
-        } catch (\Exception $e) {}
-    }
-    if (!empty($this->endDate)) {
-        try {
-            $dateString = str_replace('-', '/', $this->endDate);
-            $endDateCarbon = Jalalian::fromFormat('Y/m/d', $dateString)->toCarbon()->endOfDay();
-        } catch (\Exception $e) {}
-    }
+        // تبدیل تاریخ‌های شمسی
+        $startDateCarbon = null;
+        $endDateCarbon = null;
+        if (!empty($this->startDate)) {
+            try {
+                $dateString = str_replace('-', '/', $this->startDate);
+                $startDateCarbon = Jalalian::fromFormat('Y/m/d', $dateString)->toCarbon()->startOfDay();
+            } catch (\Exception $e) {
+            }
+        }
+        if (!empty($this->endDate)) {
+            try {
+                $dateString = str_replace('-', '/', $this->endDate);
+                $endDateCarbon = Jalalian::fromFormat('Y/m/d', $dateString)->toCarbon()->endOfDay();
+            } catch (\Exception $e) {
+            }
+        }
 
-    // ====== برداشت‌ها ======
-    $withdrawQuery = WithdrawLog::with('customer')
-        ->where('admin_id', $adminId)
-        ->whereNotNull('customer_id');
+        // ====== برداشت‌ها ======
+        $withdrawQuery = WithdrawLog::with('customer')
+            ->where('admin_id', $adminId)
+            ->whereNotNull('customer_id');
 
-    if (!empty($this->search)) {
-        $withdrawQuery->whereHas('customer', function ($q) {
-            $q->where('fullname', 'like', '%' . $this->search . '%');
-        });
-    }
-    if (!empty($this->filterCustomerId)) {
-        $withdrawQuery->where('customer_id', $this->filterCustomerId);
-    }
-    if ($startDateCarbon) {
-        $withdrawQuery->where('created_at', '>=', $startDateCarbon);
-    }
-    if ($endDateCarbon) {
-        $withdrawQuery->where('created_at', '<=', $endDateCarbon);
-    }
-    if (!empty($this->filterCurrency)) {
-        $withdrawQuery->where('currency', $this->filterCurrency);
-    }
+        if (!empty($this->search)) {
+            $withdrawQuery->whereHas('customer', function ($q) {
+                $q->where('fullname', 'like', '%' . $this->search . '%');
+            });
+        }
+        if (!empty($this->filterCustomerId)) {
+            $withdrawQuery->where('customer_id', $this->filterCustomerId);
+        }
+        if ($startDateCarbon) {
+            $withdrawQuery->where('created_at', '>=', $startDateCarbon);
+        }
+        if ($endDateCarbon) {
+            $withdrawQuery->where('created_at', '<=', $endDateCarbon);
+        }
+        if (!empty($this->filterCurrency)) {
+            $withdrawQuery->where('currency', $this->filterCurrency);
+        }
 
-    // اگر فیلتر نوع تراکنش روی 'outside' باشد، برداشت‌ها را نگیریم
-    $withdrawals = ($this->filterTransactionType === 'outside') 
-        ? collect() 
-        : $withdrawQuery->get()->map(function ($item) {
-            return [
-                'type' => $item->expanses_type ?? 'برداشت',
-                'customer_name' => $item->customer ? $item->customer->fullname : 'نامشخص',
-                'amount' => $item->amount,
-                'currency' => $item->currency,
-                'description' => $item->description ?? '-',
-                'created_at' => $item->created_at,
-                'date_fa' => Jalalian::fromCarbon($item->created_at)->format('Y/m/d H:i'),
-                'transaction_type' => 'withdrawal',
-            ];
-        });
+        // اگر فیلتر نوع تراکنش روی 'outside' باشد، برداشت‌ها را نگیریم
+        $withdrawals = ($this->filterTransactionType === 'outside')
+            ? collect()
+            : $withdrawQuery->get()->map(function ($item) {
+                return [
+                    'type' => $item->expanses_type ?? 'برداشت',
+                    'customer_name' => $item->customer ? $item->customer->fullname : 'نامشخص',
+                    'amount' => $item->amount,
+                    'currency' => $item->currency,
+                    'description' => $item->description ?? '-',
+                    'created_at' => $item->created_at,
+                    'date_fa' => Jalalian::fromCarbon($item->created_at)->format('Y/m/d H:i'),
+                    'transaction_type' => 'withdrawal',
+                ];
+            });
 
-    // ====== پرداخت‌های بیرونی ======
-    $outsideQuery = Outside::with('customer')
-        ->where('admin_id', $adminId)
-        ->whereNotNull('customer_id');
+        // ====== پرداخت‌های بیرونی ======
+        $outsideQuery = Outside::with('customer')
+            ->where('admin_id', $adminId)
+            ->whereNotNull('customer_id');
 
-    if (!empty($this->search)) {
-        $outsideQuery->whereHas('customer', function ($q) {
-            $q->where('fullname', 'like', '%' . $this->search . '%');
-        });
-    }
-    if (!empty($this->filterCustomerId)) {
-        $outsideQuery->where('customer_id', $this->filterCustomerId);
-    }
-    if ($startDateCarbon) {
-        $outsideQuery->where('created_at', '>=', $startDateCarbon);
-    }
-    if ($endDateCarbon) {
-        $outsideQuery->where('created_at', '<=', $endDateCarbon);
-    }
-    if (!empty($this->filterCurrency)) {
-        $outsideQuery->where('currency', $this->filterCurrency);
-    }
+        if (!empty($this->search)) {
+            $outsideQuery->whereHas('customer', function ($q) {
+                $q->where('fullname', 'like', '%' . $this->search . '%');
+            });
+        }
+        if (!empty($this->filterCustomerId)) {
+            $outsideQuery->where('customer_id', $this->filterCustomerId);
+        }
+        if ($startDateCarbon) {
+            $outsideQuery->where('created_at', '>=', $startDateCarbon);
+        }
+        if ($endDateCarbon) {
+            $outsideQuery->where('created_at', '<=', $endDateCarbon);
+        }
+        if (!empty($this->filterCurrency)) {
+            $outsideQuery->where('currency', $this->filterCurrency);
+        }
 
-    $outsides = ($this->filterTransactionType === 'withdrawal') 
-        ? collect() 
-        : $outsideQuery->get()->map(function ($item) {
-            return [
-                'type' => $item->type ?? 'پرداخت بیرونی',
-                'customer_name' => $item->customer ? $item->customer->fullname : 'نامشخص',
-                'amount' => $item->paid,
-                'currency' => $item->currency,
-                'description' => $item->description ?? '-',
-                'created_at' => $item->created_at,
-                'date_fa' => Jalalian::fromCarbon($item->created_at)->format('Y/m/d H:i'),
-                'transaction_type' => 'outside',
-            ];
-        });
+        $outsides = ($this->filterTransactionType === 'withdrawal')
+            ? collect()
+            : $outsideQuery->get()->map(function ($item) {
+                return [
+                    'type' => $item->type ?? 'پرداخت بیرونی',
+                    'customer_name' => $item->customer ? $item->customer->fullname : 'نامشخص',
+                    'amount' => $item->paid,
+                    'currency' => $item->currency,
+                    'description' => $item->description ?? '-',
+                    'created_at' => $item->created_at,
+                    'date_fa' => Jalalian::fromCarbon($item->created_at)->format('Y/m/d H:i'),
+                    'transaction_type' => 'outside',
+                ];
+            });
 
-    // ادغام و مرتب‌سازی نزولی
-    $all = $withdrawals->concat($outsides);
-    return $all->sortByDesc('created_at')->values();
-}
+        // ادغام و مرتب‌سازی نزولی
+        $all = $withdrawals->concat($outsides);
+        return $all->sortByDesc('created_at')->values();
+    }
 
     // ==================== رندر ====================
     public function render()

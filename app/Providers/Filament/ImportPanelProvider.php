@@ -18,6 +18,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Support\Enums\MaxWidth;
 
 class ImportPanelProvider extends PanelProvider
 {
@@ -39,6 +40,8 @@ class ImportPanelProvider extends PanelProvider
             ])
             ->login(ImportLogin::class)
             ->authGuard('import')
+                ->maxContentWidth(MaxWidth::Full)
+
             ->databaseNotifications()
             ->databaseNotificationsPolling('60s')
             ->brandName("حبیب یونس لمتید")
@@ -92,7 +95,11 @@ class ImportPanelProvider extends PanelProvider
                                                     line-height: 32px !important;
                                                     color: #ffffff !important;
                                                 }
-                                                                                    .fi-sidebar,
+
+                                                         
+                                                           
+                                                       
+                                                .fi-sidebar,
                                             .fi-sidebar * {
                                                 color: #ffffff !important;
                                             }
