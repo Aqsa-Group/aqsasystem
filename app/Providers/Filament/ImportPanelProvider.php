@@ -18,7 +18,6 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Filament\Support\Enums\MaxWidth;
 
 class ImportPanelProvider extends PanelProvider
 {
@@ -40,8 +39,6 @@ class ImportPanelProvider extends PanelProvider
             ])
             ->login(ImportLogin::class)
             ->authGuard('import')
-                ->maxContentWidth(MaxWidth::Full)
-
             ->databaseNotifications()
             ->databaseNotificationsPolling('60s')
             ->brandName("حبیب یونس لمتید")
