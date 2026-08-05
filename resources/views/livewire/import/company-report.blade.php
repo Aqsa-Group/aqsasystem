@@ -393,7 +393,7 @@
                             <td class="px-4 py-2">{{ number_format($buy->total_price, 2) }}</td>
                             <td class="px-4 py-2">{{ number_format($buy->paid, 2) }}</td>
                             <td class="px-4 py-2">{{ number_format($buy->remaining, 2) }}</td>
-<td class="px-4 py-2">{{ optional($buy->import_date)->format('Y/m/d') }}</td>                        </tr>
+<td class="px-4 py-2">{{ optional($buy->import_date) ? \Morilog\Jalali\Jalalian::fromCarbon($buy->import_date)->format('Y/m/d') : '' }}</td> </tr>                   </tr>
                         @endforeach
                     </tbody>
                     <tfoot class="bg-gray-100 dark:bg-gray-800 font-bold">
