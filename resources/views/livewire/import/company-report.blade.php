@@ -1,5 +1,5 @@
 <div>
-            <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">گزارش خرید از شرکت‌ها</h2>
+    <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">گزارش خرید از شرکت‌ها</h2>
 
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
 
@@ -356,7 +356,7 @@
 
             <!-- دکمه‌ها -->
             <div class="flex items-end gap-2">
-            
+
                 <button wire:click="printPdf" type="button"
                     class="w-full py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition">
                     چاپ PDF
@@ -393,8 +393,8 @@
                             <td class="px-4 py-2">{{ number_format($buy->total_price, 2) }}</td>
                             <td class="px-4 py-2">{{ number_format($buy->paid, 2) }}</td>
                             <td class="px-4 py-2">{{ number_format($buy->remaining, 2) }}</td>
-<td class="px-4 py-2">{{ optional($buy->import_date)->format('Y/m/d') }}</td>     
-                   </tr>
+                            <td class="px-4 py-2">{{ optional($buy->import_date)->format('Y/m/d') }}</td>
+                        </tr>
                         @endforeach
                     </tbody>
                     <tfoot class="bg-gray-100 dark:bg-gray-800 font-bold">
@@ -643,7 +643,7 @@
             });
         });
     </script>
-       @push('styles')
+    @push('styles')
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">

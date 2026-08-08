@@ -11,10 +11,15 @@ use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Morilog\Jalali\Jalalian;
-use Mpdf\Mpdf;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
+use Mpdf\Mpdf;
+use Mpdf\Config\ConfigVariables;
+use Mpdf\Config\FontVariables;
+use Livewire\Attributes\On;
+
 
 class Salary extends Component
 {
@@ -56,6 +61,82 @@ class Salary extends Component
         $this->date = Jalalian::now()->format('Y/m/d');
         $this->loadInitialData();
     }
+
+public function print($salaryId = null)
+{
+    $user = Auth::guard('import')->user();
+    if (!$user) {
+        session()->flash('error', 'کاربر یافت نشد.');
+        return;
+    }
+
+    // دریافت داده‌ها
+    if ($salaryId) {
+        $salaries = Salarys::with('staff')
+            ->where('id', $salaryId)
+            ->where('user_id', $user->id)
+            ->get();
+
+        if ($salaries->isEmpty()) {
+            session()->flash('error', 'پرداخت معاش یافت نشد.');
+            return;
+        }
+        $staffName = $salaries->first()->staff->name ?? null;
+    } else {
+        $salaries = $this->salaries;
+        $staffName = null;
+    }
+
+    // رندر ویو
+    $html = view('pdf.import.salary-list', [
+        'salaries' => $salaries,
+        'staffName' => $staffName,
+    ])->render();
+
+    try {
+        // تنظیمات mPDF (با فونت vazir)
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'directionality' => 'rtl',
+            'margin_top' => 8,
+            'margin_bottom' => 8,
+            'margin_left' => 4,
+            'margin_right' => 4,
+            'fontDir' => array_merge(
+                (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                [public_path('fonts/vazir/')]
+            ),
+            'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+                'vazir' => [
+                    'R' => 'Vazir-Light.ttf',
+                    'B' => 'Vazir-Bold.ttf',
+                    'useOTL' => 0xFF,
+                    'useKashida' => 75,
+                ],
+            ],
+            'default_font' => 'vazir',
+            'tempDir' => storage_path('app/mpdf'),
+        ]);
+
+        $mpdf->WriteHTML($html);
+
+        // تولید PDF به صورت رشته
+        $pdfContent = $mpdf->Output('', 'S');
+
+        // ارسال رویداد به مرورگر (روش صحیح در Livewire v3)
+        $this->dispatch('download-pdf', [
+            'content' => base64_encode($pdfContent),
+            'filename' => 'گزارش-معاش_' . now()->format('Ymd_His') . '.pdf',
+        ]);
+
+        session()->flash('message', 'فایل PDF با موفقیت تولید شد.');
+
+    } catch (\Exception $e) {
+        session()->flash('error', 'خطا در تولید PDF: ' . $e->getMessage());
+    }
+}
+    
 
     private function loadInitialData()
     {
