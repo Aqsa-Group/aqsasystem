@@ -205,6 +205,8 @@ class ShopkeeperReceiptResource extends Resource
                         'IRR' => 'ریال',
                         default => $state,
                     }),
+                     Tables\Columns\TextColumn::make('description')
+                    ->label('توضیحات'),
                 Tables\Columns\TextColumn::make('date')
                     ->label('تاریخ')
                     ->formatStateUsing(fn($state) => $state ? Jalalian::fromDateTime($state)->format('Y/m/d') : '—'),
@@ -258,7 +260,6 @@ class ShopkeeperReceiptResource extends Resource
                         'صفایی' => 'صفایی',
                     ]),
 
-                // فیلتر طبق (بر اساس shop یا booth)
                 SelectFilter::make('floor')
                     ->label('طبق')
                     ->options(function () use ($markets) {
@@ -278,7 +279,6 @@ class ShopkeeperReceiptResource extends Resource
                         }
                     }),
 
-                // فیلتر تاریخ (بر اساس فیلد date)
                 Filter::make('date')
                     ->label('تاریخ')
                     ->form([
