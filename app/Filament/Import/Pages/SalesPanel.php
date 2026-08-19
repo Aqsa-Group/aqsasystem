@@ -56,7 +56,7 @@ class SalesPanel extends Page
     public array $suggestions = [];
 
     public string $buyerName = '';
-    public ?float $receivedAmount = 0.000;
+    public string $receivedAmount = '0';
     public float $discount = 0.000;
 
     public bool $productError = false;
@@ -653,55 +653,86 @@ class SalesPanel extends Page
 
     public function updatedItems($value, $key): void
     {
-        if (str_contains($key, 'quantity')) {
-
-            $index = explode('.', $key)[0];
-
-            if (!isset($this->items[$index])) {
-                return;
-            }
-
-            $warehouse = Warehouse::where(
-                'barcode',
-                $this->items[$index]['barcode']
-            )->first();
-
-            if (!$warehouse) {
-                return;
-            }
-
-            $qty = (int) $this->items[$index]['quantity'];
-
-            if ($qty < 1) {
-                $qty = 1;
-            }
-
-            // موجودی مجاز
-            if (($this->items[$index]['unit'] ?? $warehouse->unit) === 'دانه') {
-
-                $maxQty = $warehouse->all_exist_number;
-            } else {
-
-                $maxQty = $this->saleType === 'wholesale'
-                    ? $warehouse->quantity
-                    : $warehouse->all_exist_number;
-            }
-
-            // جلوگیری از بیشتر شدن
-            if ($qty > $maxQty) {
-
-                $qty = $maxQty;
-
-                Notification::make()
-                    ->title("بیشتر از موجودی نمی‌توانید وارد کنید!")
-                    ->warning()
-                    ->send();
-            }
-
-            $this->items[$index]['quantity'] = $qty;
-
-            $this->updateItemTotal($index);
+        if (!str_contains($key, 'quantity')) {
+            return;
         }
+
+        $parts = explode('.', $key);
+        $index = (int) ($parts[0] ?? -1);
+
+        if (!isset($this->items[$index])) {
+            return;
+        }
+
+        /*
+     * وقتی کاربر 1 را پاک می‌کند،
+     * فعلاً هیچ کاری نکن.
+     *
+     * اجازه بده کاربر 22 را کامل تایپ کند.
+     */
+        if ($value === '' || $value === null) {
+            return;
+        }
+
+        $warehouse = Warehouse::where(
+            'barcode',
+            $this->items[$index]['barcode']
+        )->first();
+
+        if (!$warehouse) {
+            return;
+        }
+
+        $qty = (int) $value;
+
+        /*
+     * اگر مقدار کمتر از 1 بود،
+     * فقط در این مرحله اصلاحش کن.
+     */
+        if ($qty < 1) {
+            $qty = 1;
+        }
+
+        // حداکثر موجودی
+        if (($this->items[$index]['unit'] ?? $warehouse->unit) === 'دانه') {
+
+            $maxQty = (int) $warehouse->all_exist_number;
+        } else {
+
+            $maxQty = $this->saleType === 'wholesale'
+                ? (int) $warehouse->quantity
+                : (int) $warehouse->all_exist_number;
+        }
+
+        // اگر موجودی کافی نیست
+        if ($maxQty <= 0) {
+
+            $this->items[$index]['quantity'] = 1;
+
+            Notification::make()
+                ->title('موجودی کافی نیست!')
+                ->danger()
+                ->send();
+
+            return;
+        }
+
+        // بیشتر از موجودی
+        if ($qty > $maxQty) {
+
+            $qty = $maxQty;
+
+            Notification::make()
+                ->title("حداکثر موجودی: {$maxQty}")
+                ->warning()
+                ->send();
+        }
+
+        // ذخیره تعداد
+        $this->items[$index]['quantity'] = $qty;
+
+        // محاسبه فوری قیمت
+        $this->updateItemTotal($index);
     }
     /**
      * بررسی وجود آیتم

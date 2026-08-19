@@ -117,7 +117,7 @@
     <input
         type="number"
         min="1"
-        wire:model.live.debounce.300ms="items.{{ $index }}.quantity"
+        wire:model.live.debounce.500ms="items.{{ $index }}.quantity"
         class="w-16 border rounded px-2 py-1 text-center bg-gray-50 dark:bg-gray-800 dark:text-gray-100"
     />
 
@@ -230,12 +230,19 @@
                     {{-- مبلغ رسید --}}
                     <template x-if="saleType === 'wholesale'">
                         <div class="space-y-3">
-                            <div class="flex items-center justify-between">
-                                <span class="text-lg font-bold text-gray-800 dark:text-gray-200">💵 مبلغ رسید:</span>
-                                <input wire:model.live="receivedAmount" type="number" min="0" step="0.001"
-                                    class="w-40 border rounded-lg px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-100"
-                                    placeholder="0" />
-                            </div>
+                        <div class="flex items-center justify-between">
+    <span class="text-lg font-bold text-gray-800 dark:text-gray-200">
+        💵 مبلغ رسید:
+    </span>
+
+    <input
+        wire:model.live.debounce.300ms="receivedAmount"
+        type="text"
+        inputmode="decimal"
+        class="w-40 border rounded-lg px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-100"
+        placeholder="0.000"
+    />
+</div>
 
                             <div class="flex items-center justify-between">
                                 <span class="text-lg font-bold text-gray-800 dark:text-gray-200">🧾 باقیمانده:</span>
