@@ -105,20 +105,30 @@
                             @forelse($items as $index => $item)
                             <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
                                 <td class="p-2 text-gray-800 dark:text-gray-200">{{ $item['name'] }}</td>
-                                <td class="p-2 flex items-center justify-center gap-2">
-                                    <button type="button" wire:click="decreaseQuantity({{ $index }})"
-                                        class="px-2 py-1 bg-red-500 text-white rounded">
-                                        −
-                                    </button>
+                               <td class="p-2 flex items-center justify-center gap-2">
+    <button
+        type="button"
+        wire:click="decreaseQuantity({{ $index }})"
+        class="px-2 py-1 bg-red-500 text-white rounded"
+    >
+        −
+    </button>
 
-                                    <input type="number" min="1" wire:model.blur="items.{{ $index }}.quantity"
-                                        class="w-16 border rounded px-2 py-1 text-center bg-gray-50 dark:bg-gray-800 dark:text-gray-100" />
+    <input
+        type="number"
+        min="1"
+        wire:model.live.debounce.300ms="items.{{ $index }}.quantity"
+        class="w-16 border rounded px-2 py-1 text-center bg-gray-50 dark:bg-gray-800 dark:text-gray-100"
+    />
 
-                                    <button type="button" wire:click="increaseQuantity({{ $index }})"
-                                        class="px-2 py-1 bg-green-500 text-white rounded">
-                                        +
-                                    </button>
-                                </td>
+    <button
+        type="button"
+        wire:click="increaseQuantity({{ $index }})"
+        class="px-2 py-1 bg-green-500 text-white rounded"
+    >
+        +
+    </button>
+</td>
                                 <td class="p-4">
                                     <select wire:model.live="items.{{ $index }}.unit"
                                         class="rounded-lg border-gray-300 dark:bg-gray-800 dark:text-white text-sm px-6 py-1 flex justify-center items-center">
