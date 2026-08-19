@@ -111,8 +111,7 @@
                                         −
                                     </button>
 
-                                    <input type="number" min="1"
-                                        wire:model.live.debounce.5s="items.{{ $index }}.quantity"
+                                    <input type="number" min="1" wire:model.blur="items.{{ $index }}.quantity"
                                         class="w-16 border rounded px-2 py-1 text-center bg-gray-50 dark:bg-gray-800 dark:text-gray-100" />
 
                                     <button type="button" wire:click="increaseQuantity({{ $index }})"
