@@ -29,6 +29,7 @@ class MarketPanelProvider extends PanelProvider
             ->font('Scheherazade New')
             ->theme(asset('css/filament/market/theme.css'))
             ->login(CustomLogin::class)
+            ->homeUrl(fn () => \App\Filament\Market\Pages\Dashboard::getUrl())
             ->authGuard('market')
             ->colors([
                 'primary' => '#6366f1',

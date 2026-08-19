@@ -69,10 +69,27 @@ class OutsideResource extends Resource
                     'customer' => 'مشتری',
                     'staff'    => 'کارمند',
                 ])
-                ->default('staff')
+                ->default(function ($record) {
+                    if ($record?->customer_id) {
+                        return 'customer';
+                    }
+
+                    if ($record?->staff_id) {
+                        return 'staff';
+                    }
+
+                    return 'staff';
+                })
+                ->afterStateHydrated(function ($component, $record) {
+                    if ($record?->customer_id) {
+                        $component->state('customer');
+                    } elseif ($record?->staff_id) {
+                        $component->state('staff');
+                    }
+                })
                 ->searchable()
                 ->dehydrated(false)
-                ->reactive(),
+                ->live(),
 
             Forms\Components\Select::make('customer_id')
                 ->label('نام مشتری')
@@ -129,7 +146,7 @@ class OutsideResource extends Resource
                 ->default(now('Asia/Kabul'))
                 ->required(),
 
-                
+
             Forms\Components\Textarea::make('description')
                 ->label('توضیحات')
                 ->rows(3)

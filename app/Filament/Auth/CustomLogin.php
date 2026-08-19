@@ -47,15 +47,23 @@ class CustomLogin extends Login
 
         $user = User::where('username', $login)->first();
 
-        if ($user && Hash::check($password, $user->password)) {
-            Auth::guard('market')->login($user, $remember);
-            Auth::shouldUse('market');
-            Filament::auth('market')->login($user, $remember);
-
-            return app(LoginResponse::class);
+        if (! $user || ! Hash::check($password, $user->password)) {
+            $this->throwFailureValidationException();
         }
 
-        $this->throwFailureValidationException();
+        Auth::guard('market')->login($user, $remember);
+
+        Auth::shouldUse('market');
+
+        Filament::auth('market')->login($user, $remember);
+
+        // مقصد قطعی بعد از ورود
+        session()->put(
+            'url.intended',
+            url('/market/dashboard')
+        );
+
+        return app(LoginResponse::class);
     }
 
     protected function throwFailureValidationException(): never
@@ -63,10 +71,5 @@ class CustomLogin extends Login
         throw ValidationException::withMessages([
             'data.login' => __('نام کاربری یا رمز عبور اشتباه است.'),
         ]);
-    }
-
-    protected function getRedirectUrl(): string
-    {
-        return Filament::getUrl();
     }
 }
