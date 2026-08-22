@@ -519,72 +519,7 @@ return $map[$currencyCode] ?? $currencyCode;
 
                 </div>
 
-                <!-- ===== جدول اول: موجودی مشتریان ===== -->
-                <div class="overflow-x-auto w-full mt-4">
-                    <div class="max-h-[600px] overflow-y-auto">
-                        <table
-                            class="w-full text-sm md:text-base text-left rtl:text-right text-gray-700 border-collapse">
-                            <thead class="sticky top-0 z-10">
-                                <tr class="bg-gradient-to-r from-[#1e3c5c] to-[#2b4f72] text-white">
-                                    <th
-                                        class="px-3 py-3 font-bold border border-gray-300 text-center align-middle w-16">
-                                        <span class="border border-white/30 px-2 py-1 rounded-lg">#</span>
-                                    </th>
-                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center align-middle">نام
-                                        مشتری</th>
-                                    @foreach($currencies as $code => $name)
-                                    <th class="px-2 py-3 font-bold border border-gray-300 text-center"
-                                        style="background-color: #34495e;">موجودی {{ $name }}</th>
-                                    @endforeach
-                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center align-middle"
-                                        style="background-color: #34495e;">موجودی کرایه</th>
-                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center align-middle"
-                                        style="background-color: #34495e;">مجموع کل</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($reports as $index => $report)
-                                @php $rowClass = $index % 2 == 0 ? 'bg-white' : 'bg-gray-50'; @endphp
-                                <tr
-                                    class="{{ $rowClass }} hover:bg-gray-100 transition-colors duration-150 border-b border-gray-200">
-                                    <td class="px-3 py-3 text-center font-mono border-l border-gray-200"><span
-                                            class="bg-gray-100 px-2 py-1 rounded-md text-gray-700">{{ $index + 1
-                                            }}</span></td>
-                                    <td class="px-3 py-3 font-medium text-gray-800 border-l border-gray-200">{{
-                                        $report['fullname'] }}</td>
-                                    @foreach($currencies as $code => $name)
-                                    @php
-                                    $balance = $report['balance_' . strtolower($code)] ?? 0;
-                                    $class = $balance < 0 ? 'text-red-600' : ($balance> 0 ? 'text-green-600' :
-                                        'text-gray-500');
-                                        @endphp
-                                        <td class="px-2 py-3 text-left font-mono {{ $class }} border-l border-gray-200"
-                                            dir="ltr">{{ number_format($balance, 2) }}</td>
-                                        @endforeach
-                                        <td class="px-3 py-3 text-left font-mono border-l border-gray-200" dir="ltr">{{
-                                            number_format($report['rent_money'], 2) }}</td>
-                                        <td class="px-3 py-3 text-left font-mono border-l border-gray-200 font-bold"
-                                            dir="ltr">{{ number_format($report['total_balance'], 2) }}</td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="{{ 2 + count($currencies) + 2 }}"
-                                        class="px-4 py-12 text-center text-gray-500 bg-gray-50">
-                                        <div class="flex flex-col items-center justify-center">
-                                            <svg class="w-16 h-16 text-gray-300 mb-3" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                            </svg>
-                                            <span class="text-lg">داده‌ای یافت نشد</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+
 
                 <!-- ===== جدول دوم: جزئیات تمام تراکنش‌ها ===== -->
                 <div class="mt-8 border-t-2 border-[#184D6C] pt-4">
@@ -767,6 +702,74 @@ return $map[$currencyCode] ?? $currencyCode;
                         {{ $conversions->links() }}
                     </div>
                     @endif
+                </div>
+
+
+                  <!-- ===== جدول اول: موجودی مشتریان ===== -->
+                <div class="overflow-x-auto w-full mt-4">
+                    <div class="max-h-[600px] overflow-y-auto">
+                        <table
+                            class="w-full text-sm md:text-base text-left rtl:text-right text-gray-700 border-collapse">
+                            <thead class="sticky top-0 z-10">
+                                <tr class="bg-gradient-to-r from-[#1e3c5c] to-[#2b4f72] text-white">
+                                    <th
+                                        class="px-3 py-3 font-bold border border-gray-300 text-center align-middle w-16">
+                                        <span class="border border-white/30 px-2 py-1 rounded-lg">#</span>
+                                    </th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center align-middle">نام
+                                        مشتری</th>
+                                    @foreach($currencies as $code => $name)
+                                    <th class="px-2 py-3 font-bold border border-gray-300 text-center"
+                                        style="background-color: #34495e;">موجودی {{ $name }}</th>
+                                    @endforeach
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center align-middle"
+                                        style="background-color: #34495e;">موجودی کرایه</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center align-middle"
+                                        style="background-color: #34495e;">مجموع کل</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($reports as $index => $report)
+                                @php $rowClass = $index % 2 == 0 ? 'bg-white' : 'bg-gray-50'; @endphp
+                                <tr
+                                    class="{{ $rowClass }} hover:bg-gray-100 transition-colors duration-150 border-b border-gray-200">
+                                    <td class="px-3 py-3 text-center font-mono border-l border-gray-200"><span
+                                            class="bg-gray-100 px-2 py-1 rounded-md text-gray-700">{{ $index + 1
+                                            }}</span></td>
+                                    <td class="px-3 py-3 font-medium text-gray-800 border-l border-gray-200">{{
+                                        $report['fullname'] }}</td>
+                                    @foreach($currencies as $code => $name)
+                                    @php
+                                    $balance = $report['balance_' . strtolower($code)] ?? 0;
+                                    $class = $balance < 0 ? 'text-red-600' : ($balance> 0 ? 'text-green-600' :
+                                        'text-gray-500');
+                                        @endphp
+                                        <td class="px-2 py-3 text-left font-mono {{ $class }} border-l border-gray-200"
+                                            dir="ltr">{{ number_format($balance, 2) }}</td>
+                                        @endforeach
+                                        <td class="px-3 py-3 text-left font-mono border-l border-gray-200" dir="ltr">{{
+                                            number_format($report['rent_money'], 2) }}</td>
+                                        <td class="px-3 py-3 text-left font-mono border-l border-gray-200 font-bold"
+                                            dir="ltr">{{ number_format($report['total_balance'], 2) }}</td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="{{ 2 + count($currencies) + 2 }}"
+                                        class="px-4 py-12 text-center text-gray-500 bg-gray-50">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <svg class="w-16 h-16 text-gray-300 mb-3" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                            <span class="text-lg">داده‌ای یافت نشد</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
             </div>
