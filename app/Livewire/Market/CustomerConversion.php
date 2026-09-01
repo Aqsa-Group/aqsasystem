@@ -390,10 +390,7 @@ class CustomerConversion extends Component
         $balanceField = 'balance_' . strtolower($this->from_currency);
         $customer = CustomerModel::find($this->selectedAccount);
 
-        if ($customer->$balanceField < $this->withdraw_amount) {
-            session()->flash('error', 'موجودی ناکافی در ' . $this->from_currency);
-            return;
-        }
+      
 
         try {
             DB::connection('market')->transaction(function () use ($customer) {
