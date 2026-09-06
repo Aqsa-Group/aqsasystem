@@ -22,9 +22,9 @@ class SalaryResource extends Resource
     protected static ?string $model = Salary::class;
     protected static ?string $navigationIcon = 'fluentui-people-money-24';
     protected static ?string $navigationGroup = 'بخش مالی';
-    protected static ?string $navigationLabel = 'پرداخت معاش کارمندان';
+    protected static ?string $navigationLabel = 'پرداخت معاش پرسونل';
     protected static ?string $modelLabel = 'پرداخت';
-    protected static ?string $pluralLabel = 'صفحه ثبت معاش کارمندان';
+    protected static ?string $pluralLabel = 'صفحه پرداخت معاشات پرسونل';
 
     public static function canViewAny(): bool
     {
@@ -51,7 +51,7 @@ class SalaryResource extends Resource
                 }),
 
             Forms\Components\Select::make('staff_id')
-                ->label('نام کارمند')
+                ->label('نام پرسونل')
                 ->options(
                     fn(callable $get) =>
                     Staff::where('market_id', $get('market_id'))
@@ -408,7 +408,7 @@ class SalaryResource extends Resource
     {
         return $table->columns([
             Tables\Columns\TextColumn::make('market.name')->label('مارکت'),
-            Tables\Columns\TextColumn::make('staff.fullname')->label('کارمند')->searchable(),
+            Tables\Columns\TextColumn::make('staff.fullname')->label('نام پرسونل')->searchable(),
             Tables\Columns\TextColumn::make('salary')->label('معاش ماهانه'),
             Tables\Columns\TextColumn::make('paid')->label('مبلغ پرداختی'),
             Tables\Columns\TextColumn::make('reduce_loan')->label('رسید قرض'),

@@ -1,5 +1,5 @@
 <!-- سایدبار ریسپانسیو با پشتیبانی از دارک/لایت -->
-<div x-data="{ 
+<div x-data="{
     isOpen: true,
     activeGroup: null,
     toggleGroup(group) {
@@ -213,7 +213,7 @@
 
                     <a href="/market/staff-profile"
                         class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">
-                        گزارش کارمندان
+                        گزارشات پرسونل
                     </a>
 
                     <a href="/market/customer-profile"
@@ -227,12 +227,12 @@
                           تبدیل ارز  در حساب مشتری
                     </a>
 
-                    
+
 
                     <a href="/market/shopkeeper-profile"
                         class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">
                         گزارش دوکانداران
-                    </a> 
+                    </a>
 
                 </div>
             </div>

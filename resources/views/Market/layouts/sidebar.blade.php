@@ -634,7 +634,7 @@
                         settings: false
                     },
                     active: 'dashboard',
-                    
+
                     setActive(item, parent = null) {
                         this.active = item;
                         if (parent && this.openItems.hasOwnProperty(parent)) {
@@ -890,11 +890,6 @@
                         </div>
                     </div>
 
-
-
-
-
-
                 </nav>
             </div>
 
@@ -915,12 +910,12 @@
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const sidebar = document.getElementById('sidebar');
             const mobileOverlay = document.getElementById('mobileOverlay');
-            
+
             mobileMenuBtn.addEventListener('click', function() {
                 sidebar.classList.toggle('open');
                 mobileOverlay.classList.toggle('open');
             });
-            
+
             mobileOverlay.addEventListener('click', function() {
                 sidebar.classList.remove('open');
                 mobileOverlay.classList.remove('open');
@@ -967,17 +962,17 @@
 
             window.addEventListener('load', function() {
                 clearInterval(fakeProgressInterval);
-                
+
                 // انیمیشن نهایی نوار پیشرفت
                 let finalProgress = 85;
                 const finalInterval = setInterval(() => {
                     if (finalProgress >= 100) {
                         clearInterval(finalInterval);
                         progressBar.style.width = '100%';
-                        
+
                         // نمایش پیام تکمیل
                         document.querySelector('.loader-subtext').textContent = 'آماده‌سازی پنل مدیریت...';
-                        
+
                         setTimeout(() => {
                             loader.classList.add('loader-complete');
                             mainContent.style.display = 'block';
@@ -1038,28 +1033,28 @@
         const sunIcon = document.getElementById('sunIcon');
         const moonIcon = document.getElementById('moonIcon');
         const toggleCircle = document.getElementById('toggleCircle');
-        
+
         const darkModeToggleMobile = document.getElementById('darkModeToggleMobile');
         const sunIconMobile = document.getElementById('sunIconMobile');
         const moonIconMobile = document.getElementById('moonIconMobile');
         const toggleCircleMobile = document.getElementById('toggleCircleMobile');
-        
+
         const html = document.documentElement;
 
         // غیرفعال کردن دارک مود به صورت پیش‌فرض
         localStorage.setItem('theme', 'light');
         html.classList.remove('dark');
-        
+
         if (darkModeToggle) {
             darkModeToggle.checked = false;
             darkModeToggle.disabled = true;
         }
-        
+
         if (darkModeToggleMobile) {
             darkModeToggleMobile.checked = false;
             darkModeToggleMobile.disabled = true;
         }
-        
+
         if (sunIcon) sunIcon.classList.remove('hidden');
         if (sunIconMobile) sunIconMobile.classList.remove('hidden');
         if (moonIcon) moonIcon.classList.add('hidden');

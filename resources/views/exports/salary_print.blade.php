@@ -83,13 +83,14 @@
     <table class="main">
         <tr>
             <th>مارکت</th>
-            <th>نام کارمند</th>
+            <th>نام پرسونل</th>
             <th>معاش</th>
             @if (!empty($salary->reduce_loan) && $salary->reduce_loan > 0)
                 <th>رسید قرض</th>
             @endif
             <th>رسید معاش</th>
             <th>باقی‌مانده معاش</th>
+            <th>توضیحات</th>
             <th>تاریخ پرداخت</th>
 
 
@@ -103,6 +104,7 @@
             @endif
             <td>{{ number_format($salary->paid ?? 0) }}</td>
             <td>{{ number_format($salary->remained ?? 0) }}</td>
+            <td>{{ $salary->description ?? '-' }}</td>
             <td>{{ \Morilog\Jalali\Jalalian::fromDateTime($salary->paid_date)->format('Y/m/d') }}</td>
 
 
@@ -112,7 +114,7 @@
     <table class="sign">
         <tr>
             <th>امضا مدیر مالی</th>
-            <th>امضا کارمند</th>
+            <th>امضا پرسونل</th>
         </tr>
     </table>
 
@@ -141,13 +143,14 @@
     <table class="main">
         <tr>
             <th>مارکت</th>
-            <th>نام کارمند</th>
+            <th>نام پرسونل</th>
             <th>معاش</th>
             @if (!empty($salary->reduce_loan) && $salary->reduce_loan > 0)
                 <th>رسید قرض</th>
             @endif
             <th>رسید معاش</th>
             <th>باقی‌مانده معاش</th>
+            <th>توضیحات</th>
             <th>تاریخ پرداخت</th>
 
 
@@ -161,6 +164,7 @@
             @endif
             <td>{{ number_format($salary->paid ?? 0) }}</td>
             <td>{{ number_format($salary->remained ?? 0) }}</td>
+            <td>{{ $salary->description ?? '-' }}</td>
             <td>{{ \Morilog\Jalali\Jalalian::fromDateTime($salary->paid_date)->format('Y/m/d') }}</td>
 
 
@@ -170,7 +174,7 @@
     <table class="sign">
         <tr>
             <th>امضا مدیر مالی</th>
-            <th>امضا کارمند</th>
+            <th>امضا پرسونل</th>
         </tr>
     </table>
 

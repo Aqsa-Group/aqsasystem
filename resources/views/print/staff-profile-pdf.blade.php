@@ -25,7 +25,7 @@ return $map[$currencyCode] ?? $currencyCode;
 
 <head>
     <meta charset="UTF-8">
-    <title>گزارش کارمندان</title>
+    <title>گزارش پرسونلان</title>
     <style>
         * {
             margin: 0;
@@ -196,13 +196,13 @@ return $map[$currencyCode] ?? $currencyCode;
 <body>
 
     <div class="header">
-        <h1>گزارش جامع کارمندان</h1>
+        <h1>گزارش جامعپرسونلان</h1>
         <div class="sub">تاریخ چاپ: {{ \Morilog\Jalali\Jalalian::now()->format('Y/m/d H:i') }}</div>
     </div>
 
     <div class="filter-info">
         <strong>فیلترها:</strong>
-        کارمند: <span>{{ $filterInfo['staff'] }}</span> |
+        پرسونل: <span>{{ $filterInfo['staff'] }}</span> |
         ارز: <span>{{ $filterInfo['currency'] }}</span> |
         نوع تراکنش: <span>{{ $filterInfo['type'] }}</span> |
         از برداشت: <span>{{ $filterInfo['startDate'] }}</span> |
@@ -211,12 +211,12 @@ return $map[$currencyCode] ?? $currencyCode;
 
     <!-- ===== جدول خلاصه ===== -->
     <div class="no-page-break">
-        <h3 style="font-size:12px; margin-bottom:4px;">خلاصه برداشت‌ها و معاشات به تفکیک کارمند</h3>
+        <h3 style="font-size:12px; margin-bottom:4px;">خلاصه برداشت‌ها و معاشات به تفکیک پرسونل</h3>
         <table>
             <thead>
                 <tr>
                     <th rowspan="2">#</th>
-                    <th rowspan="2">نام کارمند</th>
+                    <th rowspan="2">نام پرسونل</th>
                     @foreach($currencies as $code => $name)
                     <th colspan="2">{{ $name }}</th>
                     @endforeach
@@ -304,7 +304,7 @@ return $map[$currencyCode] ?? $currencyCode;
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>نام کارمند</th>
+                    <th>نام پرسونل</th>
                     <th>نوع تراکنش</th>
                     <th>نوع برداشت</th>
                     <th>مبلغ</th>
