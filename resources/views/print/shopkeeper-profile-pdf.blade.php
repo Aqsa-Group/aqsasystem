@@ -90,7 +90,7 @@ if (!function_exists('getPersianCurrencyName')) {
         $balance = -$originalBalance;
         $class = $balance < 0 ? 'text-red-600 font-bold' : ($balance > 0 ? 'text-green-600' : 'text-gray-500');
     @endphp
-    <td class="px-2 py-3 text-left font-mono {{ $class }} border-l border-gray-200" dir="ltr">{{ number_format($balance, 2) }}</td>
+    <td class="px-2 py-3 text-left font-mono {{ $class }} border-l border-gray-200" dir="ltr">{{ number_format($balance, 0) }}</td>
 @endforeach
             </tr>
         @empty
@@ -130,9 +130,9 @@ if (!function_exists('getPersianCurrencyName')) {
                 <td>{{ $tx['shop_number'] }}</td>
                 <td>{{ $tx['market_name'] }}</td>
                 <td>{{ $tx['expanses_type'] }}</td>
-                <td class="font-mono {{ $paidClass }}">{{ number_format($tx['paid'], 2) }}</td>
+                <td class="font-mono {{ $paidClass }}">{{ number_format($tx['paid'], 0) }}</td>
                 <td>{{ getPersianCurrencyName($tx['currency']) }}</td>
-                <td class="font-mono {{ $remainedClass }}">{{ number_format($tx['remained'], 2) }}</td>
+                <td class="font-mono {{ $remainedClass }}">{{ number_format($tx['remained'], 0) }}</td>
                 <td>{{ $tx['date_fa'] }}</td>
             </tr>
         @empty

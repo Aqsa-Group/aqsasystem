@@ -590,7 +590,7 @@ return $map[$currencyCode] ?? $currencyCode;
                                         'text-gray-500');
                                         @endphp
                                         <td class="px-2 py-3 text-left font-mono {{ $class }} border-l border-gray-200"
-                                            dir="ltr">{{ number_format($balance, 2) }}</td>
+                                            dir="ltr">{{ number_format($balance, 0) }}</td>
                                         @endforeach
                                 </tr>
                                 @empty
@@ -677,11 +677,11 @@ return $map[$currencyCode] ?? $currencyCode;
                                             <td class="px-3 py-3 text-center border-l border-gray-200">{{
                                                 $tx['expanses_type'] }}</td>
                                             <td class="px-3 py-3 text-left font-mono {{ $paidClass }} border-l border-gray-200"
-                                                dir="ltr">{{ number_format($tx['paid'], 2) }}</td>
+                                                dir="ltr">{{ number_format($tx['paid'], 0) }}</td>
                                             <td class="px-3 py-3 text-center border-l border-gray-200">{{
                                                 getPersianCurrencyName($tx['currency']) }}</td>
                                             <td class="px-3 py-3 text-left font-mono {{ $remainedClass }} border-l border-gray-200"
-                                                dir="ltr">{{ number_format($remainedValue, 2) }}</td>
+                                                dir="ltr">{{ number_format($remainedValue, 0) }}</td>
                                             <td class="px-3 py-3 text-center border-l border-gray-200 text-xs">{{
                                                 $tx['date_fa'] }}</td>
                                         </tr>

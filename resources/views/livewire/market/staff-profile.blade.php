@@ -48,7 +48,7 @@ return $map[$currencyCode] ?? $currencyCode;
 
                 <div
                     class="flex flex-col md:flex-row justify-between items-center p-3 md:p-4 rounded-[12px] mb-3 gap-3">
-                    <h1 class="text-[22px] inter">گزارشات پرسونل</h1>
+                    <h1 class="text-[22px] inter">گزارش حسابات</h1>
 
                 </div>
 
@@ -501,7 +501,7 @@ return $map[$currencyCode] ?? $currencyCode;
                             <path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round"
                                 stroke-linejoin="round" />
                         </svg>
-                        <input type="text" wire:model.live="search" placeholder="جستجوی پرسونل..." class="w-full h-12 md:h-[51px]
+                        <input type="text" wire:model.live="search" placeholder="جستجوی حساب..." class="w-full h-12 md:h-[51px]
                            border border-[#D7E5EC]
                            dark:bg-black dark:border-white dark:placeholder:text-white placeholder:text-black
                            rounded-[12px] pl-3 pr-12 text-sm md:text-base
@@ -530,7 +530,7 @@ return $map[$currencyCode] ?? $currencyCode;
                                     </th>
                                     <th rowspan="2"
                                         class="px-3 py-3 font-bold border border-gray-300 text-center align-middle">نام
-                                        پرسونل</th>
+                                        حساب</th>
                                     @foreach($currencies as $code => $name)
                                     <th colspan="2" class="px-2 py-3 font-bold border border-gray-300 text-center"
                                         style="background-color: #34495e;">{{ $name }}</th>
@@ -564,9 +564,9 @@ return $map[$currencyCode] ?? $currencyCode;
                                             'text-gray-500');
                                             @endphp
                                             <td class="px-2 py-3 text-left font-mono {{ $withClass }} border-l border-gray-200"
-                                                dir="ltr">{{ number_format($with, 2) }}</td>
+                                                dir="ltr">{{ number_format($with, 0) }}</td>
                                             <td class="px-2 py-3 text-left font-mono {{ $salClass }} {{ !$loop->last ? 'border-l' : '' }} border-gray-200"
-                                                dir="ltr">{{ number_format($sal, 2) }}</td>
+                                                dir="ltr">{{ number_format($sal, 0) }}</td>
                                             @endforeach
                                 </tr>
                                 @empty
@@ -617,7 +617,7 @@ return $map[$currencyCode] ?? $currencyCode;
                                         @php $amt = $totalWithdrawals[$code] ?? 0; $class = $amt < 0 ? 'text-red-600' :
                                             ($amt> 0 ? 'text-green-600' : 'text-gray-500'); @endphp
                                             <td class="px-2 py-3 text-left font-mono font-bold {{ $class }} border-l border-gray-300"
-                                                dir="ltr">{{ number_format($amt, 2) }}</td>
+                                                dir="ltr">{{ number_format($amt, 0) }}</td>
                                             @endforeach
                                     </tr>
                                 </tbody>
@@ -654,7 +654,7 @@ return $map[$currencyCode] ?? $currencyCode;
                                         @php $amt = $totalSalaries[$code] ?? 0; $class = $amt < 0 ? 'text-red-600' :
                                             ($amt> 0 ? 'text-green-600' : 'text-gray-500'); @endphp
                                             <td class="px-2 py-3 text-left font-mono font-bold {{ $class }} border-l border-gray-300"
-                                                dir="ltr">{{ number_format($amt, 2) }}</td>
+                                                dir="ltr">{{ number_format($amt, 0) }}</td>
                                             @endforeach
                                     </tr>
                                 </tbody>
@@ -691,7 +691,7 @@ return $map[$currencyCode] ?? $currencyCode;
                             <thead>
                                 <tr class="bg-gradient-to-r from-[#1e3c5c] to-[#2b4f72] text-white">
                                     <th class="px-3 py-3 font-bold border border-gray-300 text-center">#</th>
-                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">نام پرسونل</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">نام حساب</th>
                                     <th class="px-3 py-3 font-bold border border-gray-300 text-center">نوع ترانزکشن</th>
                                     <th class="px-3 py-3 font-bold border border-gray-300 text-center">نوع برداشت</th>
                                     <th class="px-3 py-3 font-bold border border-gray-300 text-center">مبلغ</th>
@@ -722,7 +722,7 @@ return $map[$currencyCode] ?? $currencyCode;
                                             $tx['type'] }}</span>
                                     </td>
                                     <td class="px-3 py-3 text-left font-mono {{ $amountClass }} border-l border-gray-200"
-                                        dir="ltr">{{ number_format($tx['amount'], 2) }}</td>
+                                        dir="ltr">{{ number_format($tx['amount'], 0) }}</td>
                                     <td class="px-3 py-3 text-center border-l border-gray-200">{{
                                         getPersianCurrencyName($tx['currency']) }}</td>
                                     <td class="px-3 py-3 text-center border-l border-gray-200 text-xs">{{ $tx['date_fa']

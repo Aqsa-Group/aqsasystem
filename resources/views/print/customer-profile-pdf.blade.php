@@ -193,7 +193,7 @@
                     <td><span
                             style="font-weight:bold;color:{{ $isOutside ? '#2e7d32' : '#1565c0' }}">{{ $tx['type'] }}</span>
                     </td>
-                    <td class="font-mono {{ $amountClass }}">{{ number_format($tx['amount'], 2) }}</td>
+                    <td class="font-mono {{ $amountClass }}">{{ number_format($tx['amount'], 0) }}</td>
                     <td>{{ getPersianCurrencyName($tx['currency']) }}</td>
                     <td>{{ $tx['date_fa'] }}</td>
                     <td>{{ $tx['description'] }}</td>
@@ -230,9 +230,9 @@
                     <td>{{ $conv->customer ? $conv->customer->fullname : 'نامشخص' }}</td>
                     <td>{{ getPersianCurrencyName($conv->from_currency) }}</td>
                     <td>{{ getPersianCurrencyName($conv->to_currency) }}</td>
-                    <td class="font-mono">{{ number_format($conv->withdraw_amount, 2) }}</td>
+                    <td class="font-mono">{{ number_format($conv->withdraw_amount, 0) }}</td>
                     <td class="font-mono">{{ number_format($conv->receive_amount, 2) }}</td>
-                    <td class="font-mono">{{ number_format($conv->rate, 4) }}</td>
+                    <td class="font-mono">{{ number_format($conv->rate, 3) }}</td>
                     <td>{{ $conv->transaction_date ?: \Morilog\Jalali\Jalalian::fromCarbon($conv->created_at)->format('Y/m/d') }}
                     </td>
                     <td>{{ $conv->description ?? '-' }}</td>
@@ -271,10 +271,10 @@
                             $bal = $report['balance_' . strtolower($code)] ?? 0;
                             $class = $bal < 0 ? 'text-red' : ($bal > 0 ? 'text-green' : 'text-gray');
                         @endphp
-                        <td class="font-mono {{ $class }}">{{ number_format($bal, 2) }}</td>
+                        <td class="font-mono {{ $class }}">{{ number_format($bal, 0) }}</td>
                     @endforeach
-                    <td class="font-mono">{{ number_format($report['rent_money'], 2) }}</td>
-                    <td class="font-mono font-bold">{{ number_format($report['total_balance'], 2) }}</td>
+                    <td class="font-mono">{{ number_format($report['rent_money'], 0) }}</td>
+                    <td class="font-mono font-bold">{{ number_format($report['total_balance'], 0) }}</td>
                 </tr>
             @empty
                 <tr>

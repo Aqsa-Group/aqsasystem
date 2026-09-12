@@ -196,13 +196,13 @@ return $map[$currencyCode] ?? $currencyCode;
 <body>
 
     <div class="header">
-        <h1>گزارش جامعپرسونلان</h1>
+        <h1>گزارش حسابات</h1>
         <div class="sub">تاریخ چاپ: {{ \Morilog\Jalali\Jalalian::now()->format('Y/m/d H:i') }}</div>
     </div>
 
     <div class="filter-info">
         <strong>فیلترها:</strong>
-        پرسونل: <span>{{ $filterInfo['staff'] }}</span> |
+        حساب: <span>{{ $filterInfo['staff'] }}</span> |
         ارز: <span>{{ $filterInfo['currency'] }}</span> |
         نوع تراکنش: <span>{{ $filterInfo['type'] }}</span> |
         از برداشت: <span>{{ $filterInfo['startDate'] }}</span> |
@@ -216,7 +216,7 @@ return $map[$currencyCode] ?? $currencyCode;
             <thead>
                 <tr>
                     <th rowspan="2">#</th>
-                    <th rowspan="2">نام پرسونل</th>
+                    <th rowspan="2">نام حساب</th>
                     @foreach($currencies as $code => $name)
                     <th colspan="2">{{ $name }}</th>
                     @endforeach
@@ -240,8 +240,8 @@ return $map[$currencyCode] ?? $currencyCode;
                     $withClass = $with < 0 ? 'text-red' : ($with> 0 ? 'text-green' : '');
                         $salClass = $sal < 0 ? 'text-red' : ($sal> 0 ? 'text-green' : '');
                             @endphp
-                            <td class="{{ $withClass }} text-left">{{ number_format($with, 2) }}</td>
-                            <td class="{{ $salClass }} text-left">{{ number_format($sal, 2) }}</td>
+                            <td class="{{ $withClass }} text-left">{{ number_format($with, 0) }}</td>
+                            <td class="{{ $salClass }} text-left">{{ number_format($sal, 0) }}</td>
                             @endforeach
                 </tr>
                 @empty
@@ -289,7 +289,7 @@ return $map[$currencyCode] ?? $currencyCode;
                     @foreach($currencies as $code => $name)
                     @php $amt = $totalSalaries[$code] ?? 0; $class = $amt < 0 ? 'text-red' : ($amt> 0 ? 'text-green' :
                         ''); @endphp
-                        <td class="{{ $class }} text-left">{{ number_format($amt, 2) }}</td>
+                        <td class="{{ $class }} text-left">{{ number_format($amt, 0) }}</td>
                         @endforeach
                 </tr>
             </tbody>
@@ -304,7 +304,7 @@ return $map[$currencyCode] ?? $currencyCode;
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>نام پرسونل</th>
+                    <th>نام حساب</th>
                     <th>نوع تراکنش</th>
                     <th>نوع برداشت</th>
                     <th>مبلغ</th>
@@ -326,7 +326,7 @@ return $map[$currencyCode] ?? $currencyCode;
                         {{ $tx['transaction_type'] === 'withdrawal' ? 'برداشت' : 'معاش' }}
                     </td>
                     <td><span class="badge {{ $badgeClass }}">{{ $tx['type'] }}</span></td>
-                    <td class="text-left {{ $amountClass }}">{{ number_format($tx['amount'], 2) }}</td>
+                    <td class="text-left {{ $amountClass }}">{{ number_format($tx['amount'], 0) }}</td>
                     <td>{{ getPersianCurrencyName($tx['currency']) }}</td>
                     <td>{{ $tx['date_fa'] }}</td>
                     <td style="text-align:right; max-width:150px; word-wrap:break-word;">{{ $tx['description'] }}</td>

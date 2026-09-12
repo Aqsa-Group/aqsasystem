@@ -583,7 +583,7 @@ return $map[$currencyCode] ?? $currencyCode;
                                             $tx['type'] }}</span>
                                     </td>
                                     <td class="px-3 py-3 text-left font-mono {{ $amountClass }} border-l border-gray-200"
-                                        dir="ltr">{{ number_format($tx['amount'], 2) }}</td>
+                                        dir="ltr">{{ number_format($tx['amount'], 0) }}</td>
                                     <td class="px-3 py-3 text-center border-l border-gray-200">{{
                                         getPersianCurrencyName($tx['currency']) }}</td>
                                     <td class="px-3 py-3 text-center border-l border-gray-200 text-xs">{{ $tx['date_fa']
@@ -666,13 +666,13 @@ return $map[$currencyCode] ?? $currencyCode;
                                         {{ getPersianCurrencyName($conv->to_currency) }}
                                     </td>
                                     <td class="px-3 py-3 text-left font-mono border-l border-gray-200" dir="ltr">
-                                        {{ number_format($conv->withdraw_amount, 2) }}
+                                        {{ number_format($conv->withdraw_amount, 0) }}
                                     </td>
                                     <td class="px-3 py-3 text-left font-mono border-l border-gray-200" dir="ltr">
                                         {{ number_format($conv->receive_amount, 2) }}
                                     </td>
                                     <td class="px-3 py-3 text-left font-mono border-l border-gray-200" dir="ltr">
-                                        {{ number_format($conv->rate, 4) }}
+                                        {{ number_format($conv->rate, 3) }}
                                     </td>
                                     <td class="px-3 py-3 text-center border-l border-gray-200 text-xs">
                                         {{ $conv->transaction_date ?: \Morilog\Jalali\Jalalian::fromCarbon($conv->created_at)->format('Y/m/d') }}
@@ -745,12 +745,12 @@ return $map[$currencyCode] ?? $currencyCode;
                                         'text-gray-500');
                                         @endphp
                                         <td class="px-2 py-3 text-left font-mono {{ $class }} border-l border-gray-200"
-                                            dir="ltr">{{ number_format($balance, 2) }}</td>
+                                            dir="ltr">{{ number_format($balance, 0) }}</td>
                                         @endforeach
                                         <td class="px-3 py-3 text-left font-mono border-l border-gray-200" dir="ltr">{{
-                                            number_format($report['rent_money'], 2) }}</td>
+                                            number_format($report['rent_money'], 0) }}</td>
                                         <td class="px-3 py-3 text-left font-mono border-l border-gray-200 font-bold"
-                                            dir="ltr">{{ number_format($report['total_balance'], 2) }}</td>
+                                            dir="ltr">{{ number_format($report['total_balance'], 0) }}</td>
                                 </tr>
                                 @empty
                                 <tr>
