@@ -188,42 +188,46 @@ class AccountingResource extends Resource
                     $set('expiration_date', null);
                 }),
 
-            Forms\Components\Select::make('shop_id')
-                ->label('نمبر دوکان')
-                ->options(
-                    fn($get) =>
-                    $get('market_id')
-                        ? Shop::where('market_id', $get('market_id'))->pluck('number', 'id')
-                        : []
-                )
-                ->visible(fn($get) => $get('type') === 'دوکان')
-                ->searchable()
-                ->reactive()
-                ->afterStateUpdated(function ($state, callable $set, callable $get) use ($calculateDates) {
+        Forms\Components\Select::make('shop_id')
+    ->label('نمبر دوکان')
+    ->options(function ($get) {
+        if (!$get('market_id')) {
+            return [];
+        }
 
-                    $shop = Shop::with('shopkeeper')->find($state);
+        return Shop::where('market_id', $get('market_id'))
+            ->orderByRaw("CASE WHEN number = 0 THEN 0 ELSE 1 END")
+            ->orderBy('number')
+            ->pluck('number', 'id')
+            ->mapWithKeys(fn($number, $id) => [
+                $id => (string) $number,
+            ]);
+    })
+    ->visible(fn($get) => $get('type') === 'دوکان')
+    ->searchable()
+    ->reactive()
+    ->afterStateUpdated(function ($state, callable $set, callable $get) use ($calculateDates) {
+        $shop = Shop::with('shopkeeper')->find($state);
 
-                    if ($shop) {
-                        // فقط برای نمایش
-                        $set('shopkeeper_name', $shop->shopkeeper?->fullname);
+        if ($shop) {
+            $set('shopkeeper_name', $shop->shopkeeper?->fullname);
+            $set('shopkeeper_id', $shop->shopkeeper_id);
+            $set('price', $get('expanses_type') === 'کرایه' ? $shop->price : $get('price'));
+            $set('meter_serial', $shop->metar_serial);
 
-                        // منطق قبلی تو
-                        $set('shopkeeper_id', $shop->shopkeeper_id);
-                        $set('price', $get('expanses_type') === 'کرایه' ? $shop->price : $get('price'));
-                        $set('meter_serial', $shop->metar_serial);
+            $last = Accounting::where('shop_id', $shop->id)
+                ->where('expanses_type', 'پول برق')
+                ->latest()
+                ->first();
 
-                        $last = Accounting::where('shop_id', $shop->id)
-                            ->where('expanses_type', 'پول برق')
-                            ->latest()
-                            ->first();
+            $set('past_degree', $last?->current_degree ?? 0);
+        }
 
-                        $set('past_degree', $last?->current_degree ?? 0);
-                    }
+        $calculateDates($get, $set);
+    }),
 
-                    $calculateDates($get, $set);
-                }),
 
-            Forms\Components\TextInput::make('shopkeeper_name')
+                Forms\Components\TextInput::make('shopkeeper_name')
                 ->label('نام دوکاندار')
                 ->visible(fn($get) => filled($get('shop_id')))
                 ->disabled()
@@ -408,19 +412,28 @@ class AccountingResource extends Resource
                     ]),
 
                 /* ********************* فیلتر نمبر دوکان ********************* */
-                SelectFilter::make('shop_id')
-                    ->label('نمبر دوکان')
-                    ->searchable()
-                    ->getSearchResultsUsing(function (string $search) use ($markets) {
-                        return Shop::whereIn('market_id', $markets)
-                            ->where('number', $search)
-                            ->pluck('number', 'id');
-                    })
-                    ->getOptionLabelUsing(
-                        fn($value) =>
-                        Shop::find($value)?->number
-                    ),
+              SelectFilter::make('shop_id')
+    ->label('نمبر دوکان')
+    ->searchable()
+    ->getSearchResultsUsing(function (string $search) use ($markets) {
+        return Shop::whereIn('market_id', $markets)
+            ->where(function ($query) use ($search) {
+                $query->where('number', 'like', "%{$search}%");
 
+                if ($search === '0') {
+                    $query->orWhere('number', 0);
+                }
+            })
+            ->orderByRaw("CASE WHEN number = 0 THEN 0 ELSE 1 END")
+            ->orderBy('number')
+            ->pluck('number', 'id')
+            ->mapWithKeys(fn($number, $id) => [
+                $id => (string) $number,
+            ]);
+    })
+    ->getOptionLabelUsing(
+        fn($value) => (string) (Shop::find($value)?->number ?? '')
+    ),
                 /* ********************* فیلتر نمبر غرفه ********************* */
                 SelectFilter::make('booth_id')
                     ->label('نمبر غرفه')

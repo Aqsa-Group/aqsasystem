@@ -196,7 +196,7 @@ return $map[$currencyCode] ?? $currencyCode;
 <body>
 
     <div class="header">
-        <h1>گزارش حسابات</h1>
+        <h1>گزارش حساب</h1>
         <div class="sub">تاریخ چاپ: {{ \Morilog\Jalali\Jalalian::now()->format('Y/m/d H:i') }}</div>
     </div>
 
