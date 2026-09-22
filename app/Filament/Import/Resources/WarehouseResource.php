@@ -171,28 +171,28 @@ class WarehouseResource extends Resource
                 ->afterStateUpdated(function (callable $set, $state, callable $get) {
                     // جلوگیری از حلقه بازگشتی
                     if (static::$updating) return;
-                    
+
                     // بررسی اینکه واحد مجاز باشد
                     $unit = $get('unit');
                     if (!in_array($unit, ['بسته', 'کارتن'])) {
                         return;
                     }
-                    
+
                     // اعتبارسنجی مقدار
                     if ($state === null || $state === '' || !is_numeric($state)) {
                         return;
                     }
-                    
+
                     static::$updating = true;
-                    
+
                     $bigQuantity = (int)($get('big_quantity') ?? 1);
                     $bigUnitPrice = (float)($get('big_unit_price') ?? 0);
                     $state = (float)$state;
-                    
+
                     // محاسبه all_exist_number بر اساس تعداد بسته/کارتن
                     $set('all_exist_number', $state * $bigQuantity);
                     $set('total_price', $bigUnitPrice * $state);
-                    
+
                     static::$updating = false;
                 }),
 
@@ -206,27 +206,27 @@ class WarehouseResource extends Resource
                 ->afterStateUpdated(function (callable $set, $state, callable $get) {
                     // جلوگیری از حلقه بازگشتی
                     if (static::$updating) return;
-                    
+
                     // بررسی اینکه واحد دانه باشد
                     $unit = $get('unit');
                     if ($unit != 'دانه') {
                         return;
                     }
-                    
+
                     // اعتبارسنجی مقدار
                     if ($state === null || $state === '' || !is_numeric($state)) {
                         return;
                     }
-                    
+
                     static::$updating = true;
-                    
+
                     $price = (float)($get('price') ?? 0);
                     $state = (float)$state;
-                    
+
                     // همگام‌سازی با quantity و محاسبه total_price
                     $set('quantity', $state);
                     $set('total_price', $price * $state);
-                    
+
                     static::$updating = false;
                 }),
 
@@ -407,6 +407,5 @@ class WarehouseResource extends Resource
         if (Auth::user()?->role !== 'superadmin') {
             $query->where('user_id', Auth::id());
         }
-return $query->orderBy('barcode', 'asc');
-    }
+return $query->orderByRaw('CAST(barcode AS UNSIGNED) ASC');    }
 }
