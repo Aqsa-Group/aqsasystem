@@ -102,9 +102,9 @@ $logoPath = public_path('assets/logo.png');
     // تعیین دریافت‌کننده
     $receiver = '-';
     if ($withdrawal->staff) {
-    $receiver = $withdrawal->staff->fullname . ' (کارمند)';
+    $receiver = $withdrawal->staff->fullname;
     } elseif ($withdrawal->customer) {
-    $receiver = $withdrawal->customer->fullname . ' (مشتری)';
+    $receiver = $withdrawal->customer->fullname;
     }
     // ارز
     $currency = $withdrawal->currency;
