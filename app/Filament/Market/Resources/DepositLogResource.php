@@ -43,7 +43,7 @@ class DepositLogResource extends Resource
                 Tables\Columns\TextColumn::make('new_paid')->label('پرداخت جدید'),
                 Tables\Columns\TextColumn::make('old_remained')->label('باقی قبلی'),
                 Tables\Columns\TextColumn::make('new_remained')->label('باقی جدید'),
-    
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('تاریخ ثبت رسید')
                     ->formatStateUsing(function ($state) {
@@ -59,7 +59,7 @@ class DepositLogResource extends Resource
                         if (blank($data['value'] ?? null)) return $query;
                         return $query->where('market_id', $data['value']);
                     }),
-    
+
                 Tables\Filters\SelectFilter::make('shop_id')
                     ->label('دوکان')
                     ->options(\App\Models\Market\Shop::pluck('number', 'id'))
@@ -67,15 +67,23 @@ class DepositLogResource extends Resource
                         if (blank($data['value'] ?? null)) return $query;
                         return $query->where('shop_id', $data['value']);
                     }),
-    
-                Tables\Filters\SelectFilter::make('expanses_type')
-                    ->label('نوع هزینه')
-                    ->options(fn() => DepositLog::query()->distinct()->pluck('expanses_type', 'expanses_type')->toArray())
-                    ->query(function (Builder $query, array $data): Builder {
-                        if (blank($data['value'] ?? null)) return $query;
-                        return $query->where('expanses_type', $data['value']);
-                    }),
-    
+
+               Tables\Filters\SelectFilter::make('expanses_type')
+    ->label('نوع هزینه')
+    ->options(fn() => DepositLog::query()
+        ->whereNotNull('expanses_type')
+        ->where('expanses_type', '!=', '')
+        ->distinct()
+        ->pluck('expanses_type', 'expanses_type')
+        ->toArray()
+    )
+    ->query(function (Builder $query, array $data): Builder {
+        if (blank($data['value'] ?? null)) {
+            return $query;
+        }
+
+        return $query->where('expanses_type', $data['value']);
+    }),
                 Tables\Filters\Filter::make('created_at')
                     ->label('تاریخ ثبت')
                     ->form([
@@ -96,7 +104,7 @@ class DepositLogResource extends Resource
             ])
             ->defaultSort('created_at', 'desc')
             ->actions([
-             
+
                 Tables\Actions\Action::make('print')
                   ->icon('heroicon-o-printer')
                     ->label('چاپ')
@@ -104,11 +112,11 @@ class DepositLogResource extends Resource
                     ->openUrlInNewTab(),
             ])
             ->bulkActions([
-                
-            
+
+
             ]);
     }
-    
+
 
     public static function getPages(): array
     {
