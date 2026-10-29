@@ -6,6 +6,8 @@ use App\Filament\Import\Resources\BuyResource\Pages;
 use App\Filament\Import\Resources\BuyResource\RelationManagers;
 use App\Models\Import\Buy;
 use App\Models\Import\Company;
+use Illuminate\Support\Facades\Storage;
+use Filament\Notifications\Notification;
 
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -310,6 +312,15 @@ class BuyResource extends Resource
                     ->disabled()
                     ->dehydrated(true)
                     ->reactive(),
+
+                    Forms\Components\FileUpload::make('factor_image')
+    ->label('عکس فاکتور')
+    ->image()
+    ->directory('uploads/Factor_image')
+    ->visibility('public')
+    ->optimize('webp')
+    ->maxSize(2048)
+    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp']),
             ]);
     }
 
@@ -343,7 +354,16 @@ class BuyResource extends Resource
                 Tables\Columns\TextColumn::make('remaining')
                     ->label('مبلغ باقیمانده')
                     ->formatStateUsing(fn($state) => number_format($state, 2)),
-
+Tables\Columns\ImageColumn::make('factor_image')
+    ->label('عکس فاکتور')
+    ->disk('public')
+    ->visibility('public')
+    ->size(50)
+    ->url(fn ($record) => $record->factor_image
+        ? Storage::disk('public')->url($record->factor_image)
+        : null
+    )
+    ->openUrlInNewTab(),
                 Tables\Columns\TextColumn::make('updated_at')->label('تاریخ بروزرسانی')->sortable()->toggleable(true),
             ])
             ->filters([
@@ -352,6 +372,28 @@ class BuyResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('download_factor_image')
+    ->label('دانلود عکس فاکتور')
+    ->icon('heroicon-o-arrow-down-tray')
+    ->color('success')
+    ->visible(fn ($record) => filled($record->factor_image))
+    ->action(function ($record) {
+        $disk = Storage::disk('public');
+
+        if (! $disk->exists($record->factor_image)) {
+            Notification::make()
+                ->title('فایل عکس فاکتور پیدا نشد')
+                ->danger()
+                ->send();
+
+            return null;
+        }
+
+        return response()->download(
+            $disk->path($record->factor_image),
+            basename($record->factor_image)
+        );
+    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

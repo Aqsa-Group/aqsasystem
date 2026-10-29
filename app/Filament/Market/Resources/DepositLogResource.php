@@ -4,33 +4,33 @@ namespace App\Filament\Market\Resources;
 
 use App\Filament\Market\Resources\DepositLogResource\Pages;
 use App\Models\Market\DepositLog;
-use App\Models\Market\Market;
-use App\Models\Market\Shop;
+use Carbon\Carbon;
+use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Morilog\Jalali\Jalalian;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Forms;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
-
+use Morilog\Jalali\Jalalian;
 
 class DepositLogResource extends Resource
 {
     protected static ?string $model = DepositLog::class;
-    protected static ?string $navigationIcon = 'letsicon-arhive-alt-add-light';
-    protected static ?string $navigationGroup = 'گزارشات';
-    protected static ?string $navigationLabel = 'گزارش رسید دوکان ها';
-    protected static ?string $pluralModelLabel = 'لاگ پرداختی‌ها';
-    protected static ?string $modelLabel = 'لاگ پرداختی';
 
+    protected static ?string $navigationIcon = 'letsicon-arhive-alt-add-light';
+
+    protected static ?string $navigationGroup = 'گزارشات';
+
+    protected static ?string $navigationLabel = 'گزارش رسید دوکان ها';
+
+    protected static ?string $pluralModelLabel = 'لاگ پرداختی‌ها';
+
+    protected static ?string $modelLabel = 'لاگ پرداختی';
 
     public static function canViewAny(): bool
     {
         return Auth::check() && in_array(Auth::user()?->role, ['superadmin', 'Financial Manager', 'admin']);
     }
-
 
     public static function table(Table $table): Table
     {
@@ -48,7 +48,8 @@ class DepositLogResource extends Resource
                     ->label('تاریخ ثبت رسید')
                     ->formatStateUsing(function ($state) {
                         $dt = Carbon::parse($state)->setTimezone('Asia/Kabul');
-                        return Jalalian::fromDateTime($dt)->format('Y/m/d') . ' - ' . $dt->format('g:i A');
+
+                        return Jalalian::fromDateTime($dt)->format('Y/m/d').' - '.$dt->format('g:i A');
                     }),
             ])
             ->filters([
@@ -56,7 +57,10 @@ class DepositLogResource extends Resource
                     ->label('مارکت')
                     ->options(\App\Models\Market\Market::pluck('name', 'id'))
                     ->query(function (Builder $query, array $data): Builder {
-                        if (blank($data['value'] ?? null)) return $query;
+                        if (blank($data['value'] ?? null)) {
+                            return $query;
+                        }
+
                         return $query->where('market_id', $data['value']);
                     }),
 
@@ -64,26 +68,29 @@ class DepositLogResource extends Resource
                     ->label('دوکان')
                     ->options(\App\Models\Market\Shop::pluck('number', 'id'))
                     ->query(function (Builder $query, array $data): Builder {
-                        if (blank($data['value'] ?? null)) return $query;
+                        if (blank($data['value'] ?? null)) {
+                            return $query;
+                        }
+
                         return $query->where('shop_id', $data['value']);
                     }),
 
-               Tables\Filters\SelectFilter::make('expanses_type')
-    ->label('نوع هزینه')
-    ->options(fn() => DepositLog::query()
-        ->whereNotNull('expanses_type')
-        ->where('expanses_type', '!=', '')
-        ->distinct()
-        ->pluck('expanses_type', 'expanses_type')
-        ->toArray()
-    )
-    ->query(function (Builder $query, array $data): Builder {
-        if (blank($data['value'] ?? null)) {
-            return $query;
-        }
+                Tables\Filters\SelectFilter::make('expanses_type')
+                    ->label('نوع هزینه')
+                    ->options(fn () => DepositLog::query()
+                        ->whereNotNull('expanses_type')
+                        ->where('expanses_type', '!=', '')
+                        ->distinct()
+                        ->pluck('expanses_type', 'expanses_type')
+                        ->toArray()
+                    )
+                    ->query(function (Builder $query, array $data): Builder {
+                        if (blank($data['value'] ?? null)) {
+                            return $query;
+                        }
 
-        return $query->where('expanses_type', $data['value']);
-    }),
+                        return $query->where('expanses_type', $data['value']);
+                    }),
                 Tables\Filters\Filter::make('created_at')
                     ->label('تاریخ ثبت')
                     ->form([
@@ -98,25 +105,23 @@ class DepositLogResource extends Resource
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
-                            ->when($data['from'], fn($q) => $q->where('created_at', '>=', $data['from']))
-                            ->when($data['to'], fn($q) => $q->where('created_at', '<=', $data['to']));
+                            ->when($data['from'], fn ($q) => $q->where('created_at', '>=', $data['from']))
+                            ->when($data['to'], fn ($q) => $q->where('created_at', '<=', $data['to']));
                     }),
             ])
             ->defaultSort('created_at', 'desc')
             ->actions([
 
                 Tables\Actions\Action::make('print')
-                  ->icon('heroicon-o-printer')
+                    ->icon('heroicon-o-printer')
                     ->label('چاپ')
                     ->url(fn ($record) => route('deposit-log.print', $record->id))
                     ->openUrlInNewTab(),
             ])
             ->bulkActions([
 
-
             ]);
     }
-
 
     public static function getPages(): array
     {
