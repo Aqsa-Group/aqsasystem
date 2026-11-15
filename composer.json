@@ -50,6 +50,7 @@
         "pusher/pusher-php-server": "^7.2",
         "saade/blade-iconsax": "^1.2",
         "secondnetwork/blade-tabler-icons": "^3.35",
+        "shalior/filament-persian-date-field": "^2.0",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "twilio/sdk": "^8.8",
         "vlucas/phpdotenv": "^5.6"

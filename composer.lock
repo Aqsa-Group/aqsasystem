@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7044ff2aa30f93e3a5ae48b4c20d23e3",
+    "content-hash": "d0144a5bfc3aae95108e22fd5f595976",
     "packages": [
         {
             "name": "afatmustafa/blade-hugeicons",
@@ -8650,6 +8650,74 @@
                 }
             ],
             "time": "2025-08-05T09:57:14+00:00"
+        },
+        {
+            "name": "shalior/filament-persian-date-field",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/shalior/filament-persian-date-field.git",
+                "reference": "b72720b85a9e4f1861f30ae3ab1324eb81b53bc3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/shalior/filament-persian-date-field/zipball/b72720b85a9e4f1861f30ae3ab1324eb81b53bc3",
+                "reference": "b72720b85a9e4f1861f30ae3ab1324eb81b53bc3",
+                "shasum": ""
+            },
+            "require": {
+                "filament/forms": "^3.0",
+                "filament/tables": "^3.0",
+                "illuminate/contracts": "^10.0|^11.0|^12.0",
+                "php": "^8.0",
+                "spatie/laravel-package-tools": "^1.9.2"
+            },
+            "require-dev": {
+                "nunomaduro/collision": "^6.0",
+                "orchestra/testbench": "^8.0",
+                "pestphp/pest": "^1.21",
+                "pestphp/pest-plugin-laravel": "^1.1",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "FilamentPersianDateField": "Shalior\\FilamentPersianDateField\\Facades\\FilamentPersianDateField"
+                    },
+                    "providers": [
+                        "Shalior\\FilamentPersianDateField\\FilamentPersianDateFieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Shalior\\FilamentPersianDateField\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Shalior",
+                    "email": "contact@shalior.ir",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A FilamentPhp form field to pick persian dates",
+            "homepage": "https://github.com/shalior/filament-persian-date-field",
+            "keywords": [
+                "filament-persian-date-field",
+                "laravel",
+                "shalior"
+            ],
+            "support": {
+                "issues": "https://github.com/shalior/filament-persian-date-field/issues",
+                "source": "https://github.com/shalior/filament-persian-date-field/tree/v2.0.1"
+            },
+            "time": "2025-04-27T10:43:02+00:00"
         },
         {
             "name": "simplesoftwareio/simple-qrcode",
