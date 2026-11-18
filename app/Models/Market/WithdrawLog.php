@@ -29,7 +29,7 @@ class WithdrawLog extends Model
         'updated_at',
     ];
 
-    
+
     public function staff()
     {
         return $this->belongsTo(Staff::class, 'staff_id');

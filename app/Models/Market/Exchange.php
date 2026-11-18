@@ -11,17 +11,18 @@ class Exchange extends Model
 
     protected $table = 'exchanges';
     protected $connection = 'market';
-    
+
     protected $fillable = [
         'from_type',
         'to_type',
         'amount',
         'currency',
         'description',
+        'created_at'
     ];
 
     protected $casts = [
-        'amount' => 'integer', 
+        'amount' => 'integer',
     ];
 
     public function accountings()
@@ -38,7 +39,7 @@ class Exchange extends Model
     {
         static::deleting(function ($exchange) {
             $exchange->accountings()->delete();
-            
+
             $exchange->withdrawLogs()->delete();
         });
     }

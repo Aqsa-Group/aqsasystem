@@ -8,6 +8,7 @@ use App\Models\Market\WithdrawLog;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class EditExchange extends EditRecord
 {
@@ -29,58 +30,91 @@ class EditExchange extends EditRecord
             ? $user->id
             : $user->admin_id;
 
-        // ====== 1. حذف رکوردهای قدیمی Accounting ======
-        Accounting::where('exchange_id', $record->id)
-            ->where('type', 'تبادله صندوق')
-            ->delete();
+        // تاریخ انتخاب‌شده در فرم تبادله
+        $createdAt = $record->created_at;
 
-        // ====== 2. ثبت مجدد در Accounting ======
-        // سمت برداشت
-        Accounting::create([
-            'expanses_type' => $record->from_type,
-            'currency'      => $record->currency,
-            'paid'          => -1 * $record->amount,
-            'type'          => 'تبادله صندوق',
-            'exchange_id'   => $record->id,
-            'admin_id'      => $adminId,
-        ]);
+        DB::transaction(function () use ($record, $adminId, $createdAt) {
 
-        // سمت واریز
-        Accounting::create([
-            'expanses_type' => $record->to_type,
-            'currency'      => $record->currency,
-            'paid'          => $record->amount,
-            'type'          => 'تبادله صندوق',
-            'exchange_id'   => $record->id,
-            'admin_id'      => $adminId,
-        ]);
+            // =====================================
+            // 1. حذف رکوردهای قدیمی Accounting
+            // =====================================
 
-        // ====== 3. مدیریت WithdrawLog ======
-        // حذف رکوردهای قدیمی
-        WithdrawLog::where('exchange_id', $record->id)->delete();
+            Accounting::where('exchange_id', $record->id)
+                ->where('type', 'تبادله صندوق')
+                ->delete();
 
-        // ثبت رکورد جدید (سمت برداشت)
-        WithdrawLog::create([
-            'expanses_type' => $record->from_type,
-            'currency'      => $record->currency,
-            'amount'        => $record->amount,
-            'staff_id'      => null,
-            'customer_id'   => null,
-            'description'   => 'تبادله صندوق از ' . $record->from_type . ' به ' . $record->to_type,
-            'exchange_id'   => $record->id,
-            'admin_id'      => $adminId,
-            'created_at'    => now(),
-            'updated_at'    => now(),
-        ]);
+            // =====================================
+            // 2. ثبت مجدد سمت برداشت
+            // =====================================
+
+            Accounting::create([
+                'expanses_type' => $record->from_type,
+                'currency'      => $record->currency,
+                'paid'          => -1 * $record->amount,
+                'type'          => 'تبادله صندوق',
+                'exchange_id'   => $record->id,
+                'admin_id'      => $adminId,
+                'created_at'    => $createdAt,
+            ]);
+
+            // =====================================
+            // 3. ثبت مجدد سمت واریز
+            // =====================================
+
+            Accounting::create([
+                'expanses_type' => $record->to_type,
+                'currency'      => $record->currency,
+                'paid'          => $record->amount,
+                'type'          => 'تبادله صندوق',
+                'exchange_id'   => $record->id,
+                'admin_id'      => $adminId,
+                'created_at'    => $createdAt,
+            ]);
+
+            // =====================================
+            // 4. حذف WithdrawLog قدیمی
+            // =====================================
+
+            WithdrawLog::where('exchange_id', $record->id)
+                ->delete();
+
+            // =====================================
+            // 5. ثبت مجدد WithdrawLog
+            // =====================================
+
+            WithdrawLog::create([
+                'expanses_type' => $record->from_type,
+                'currency'      => $record->currency,
+                'amount'        => $record->amount,
+                'staff_id'      => null,
+                'customer_id'   => null,
+
+                'description'   => 'تبادله صندوق از '
+                    . $record->from_type
+                    . ' به '
+                    . $record->to_type,
+
+                'exchange_id'   => $record->id,
+                'admin_id'      => $adminId,
+
+                // تاریخ اصلی تبادله
+                'created_at'    => $createdAt,
+            ]);
+
+        });
     }
 
     protected function beforeDelete(): void
     {
-        // حذف رکوردهای Accounting مرتبط
-        Accounting::where('exchange_id', $this->record->id)->delete();
+        DB::transaction(function () {
 
-        // حذف رکوردهای WithdrawLog مرتبط
-        WithdrawLog::where('exchange_id', $this->record->id)->delete();
+            Accounting::where('exchange_id', $this->record->id)
+                ->delete();
+
+            WithdrawLog::where('exchange_id', $this->record->id)
+                ->delete();
+
+        });
     }
 
     protected function getRedirectUrl(): string
@@ -88,3 +122,4 @@ class EditExchange extends EditRecord
         return $this->getResource()::getUrl('index');
     }
 }
+

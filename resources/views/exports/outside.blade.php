@@ -57,6 +57,13 @@
             'EUR' => 'یورو',
             'IRR' => 'تومان',
         ];
+
+        $createdAt = \Carbon\Carbon::parse($outside->created_at);
+
+        $jalaliDate = jdate($createdAt)->format('Y/m/d');
+
+        $time = $createdAt->format('h:i:s') . ' ' .
+            ($createdAt->format('A') === 'AM' ? 'قبل از ظهر' : 'بعد از ظهر');
     @endphp
 
 
@@ -82,11 +89,10 @@
         </table>
     </div>
 
-    <table class="test" style="width: 100%; border-collapse: collapse; border: none; margin-top: 10px;">
+    <table style="width: 100%; border-collapse: collapse; border: none; margin-top: 10px;">
         <tr>
-
             <td style="border: none; text-align: left;">
-                <small>{{ jdate($outside->date)->format('Y/m/d H:i') }}</small>
+                <small>{{ $jalaliDate }} - {{ $time }}</small>
             </td>
         </tr>
     </table>

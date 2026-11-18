@@ -4,9 +4,10 @@ namespace App\Filament\Market\Resources\ExchangeResource\Pages;
 
 use App\Filament\Market\Resources\ExchangeResource;
 use App\Models\Market\Accounting;
-use App\Models\Market\WithdrawLog; // اضافه کردن مدل WithdrawLog
+use App\Models\Market\WithdrawLog;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CreateExchange extends CreateRecord
 {
@@ -21,40 +22,59 @@ class CreateExchange extends CreateRecord
             ? $user->id
             : $user->admin_id;
 
-        // ثبت در جدول accountings (سمت برداشت)
-        Accounting::create([
-            'expanses_type' => $record->from_type,
-            'currency'      => $record->currency,
-            'paid'          => -1 * $record->amount,
-            'type'          => 'تبادله صندوق',
-            'exchange_id'   => $record->id,
-            'admin_id'      => $adminId,
-        ]);
+        // تاریخ انتخاب‌شده هنگام ثبت تبادله
+        $createdAt = $record->created_at ?? now();
 
-        // ثبت در جدول accountings (سمت واریز)
-        Accounting::create([
-            'expanses_type' => $record->to_type,
-            'currency'      => $record->currency,
-            'paid'          => $record->amount,
-            'type'          => 'تبادله صندوق',
-            'exchange_id'   => $record->id,
-            'admin_id'      => $adminId,
-        ]);
+        DB::transaction(function () use ($record, $adminId, $createdAt) {
 
-        // ====== ثبت در جدول withdraw_logs (برای سمت برداشت) ======
-        WithdrawLog::create([
-            'expanses_type' => $record->from_type,    // نوع برداشت
-            'currency'      => $record->currency,
-            'amount'        => $record->amount,       // مبلغ مثبت (برداشت)
-            'staff_id'      => null,                  // در صورت نیاز مقداردهی کنید
-            'customer_id'   => null,                  // در صورت نیاز مقداردهی کنید
-            'description'   => 'تبادله صندوق از ' . $record->from_type . ' به ' . $record->to_type,
-            'exchange_id'   => $record->id,
-            'admin_id'      => $adminId,
-            'created_at'    => now(),
-            'updated_at'    => now(),
-            
-        ]);
+            // =====================================
+            // 1. ثبت حسابداری سمت برداشت
+            // =====================================
+            Accounting::create([
+                'expanses_type' => $record->from_type,
+                'currency'      => $record->currency,
+                'paid'          => -1 * $record->amount,
+                'type'          => 'تبادله صندوق',
+                'exchange_id'   => $record->id,
+                'admin_id'      => $adminId,
+                'created_at'    => $createdAt,
+            ]);
+
+            // =====================================
+            // 2. ثبت حسابداری سمت واریز
+            // =====================================
+            Accounting::create([
+                'expanses_type' => $record->to_type,
+                'currency'      => $record->currency,
+                'paid'          => $record->amount,
+                'type'          => 'تبادله صندوق',
+                'exchange_id'   => $record->id,
+                'admin_id'      => $adminId,
+                'created_at'    => $createdAt,
+            ]);
+
+            // =====================================
+            // 3. ثبت لاگ برداشت
+            // =====================================
+            WithdrawLog::create([
+                'expanses_type' => $record->from_type,
+                'currency'      => $record->currency,
+                'amount'        => $record->amount,
+                'staff_id'      => null,
+                'customer_id'   => null,
+
+                'description'   => 'تبادله صندوق از '
+                    . $record->from_type
+                    . ' به '
+                    . $record->to_type,
+
+                'exchange_id'   => $record->id,
+                'admin_id'      => $adminId,
+
+                'created_at'    => $createdAt,
+            ]);
+
+        });
     }
 
     protected function getRedirectUrl(): string
