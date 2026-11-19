@@ -72,14 +72,14 @@ class SafeOverview extends BaseWidget
         $totalBalanceUSD = $safeRow->USD;
         $totalInventoryBalance  = Inventory::where('user_id', $userId)->sum('total_price');
         $totalWarehouse  = Warehouse::where('user_id', $userId)->sum('total_price');
-        $totalWarehouseBalance = $totalWarehouse - $totalcompanyUSD; 
+        $totalWarehouseBalance = $totalWarehouse - $totalcompanyUSD;
         $totalBoot  = $totalInventoryBalance + $totalWarehouseBalance + $totalBalance;
 
         // --- صرافی ---
-        $AFN = Sarafi::where('name', 'زرین')->sum('AFN');
-        $USD = Sarafi::where('name', 'زرین')->sum('USD');
-        $CNY = Sarafi::where('name', 'زرین')->sum('CNY');
-        $EUR = Sarafi::where('name', 'زرین')->sum('EUR');
+        $AFN = Sarafi::where('name', 'صرافی زرین')->sum('AFN');
+        $USD = Sarafi::where('name', 'صرافی زرین')->sum('USD');
+        $CNY = Sarafi::where('name', 'صرافی زرین')->sum('CNY');
+        $EUR = Sarafi::where('name', 'صرافی زرین')->sum('EUR');
 
 
     // --- قرضه‌ها از CustomerStory ---
